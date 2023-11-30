@@ -7,7 +7,7 @@ This project is designed to automate the process of synchronizing work hours fro
 - **Functionality**: A script or application will read work hour entries from a Google Sheets document and subsequently create or update events in the user's Google Calendar to reflect the work schedule accurately.
 
 ### 2. Reminder Notifications
-- **Functionality**: Implements a Google Cloud Function to send reminders to the user 15 minutes before each shift starts, ensuring timely alerts and efficient schedule management.
+- **Functionality**: Implements a Google Cloud Function to send reminders to the user 15 minutes before each shift starts and 10 minutes before it ends, ensuring timely alerts and efficient schedule management.
 
 ## Key Features
 - **API Integration**: Uses Google Sheets and Calendar APIs for seamless data retrieval and calendar synchronization.
@@ -17,7 +17,7 @@ This project is designed to automate the process of synchronizing work hours fro
 
 ## Technologies Used
 - **Google Cloud Platform (GCP)**: Utilizes various GCP services, including App Engine, Cloud Functions, Cloud Scheduler, and Pub/Sub.
-- **Programming Languages**: Python or Go for backend development.
+- **Programming Languages**: Python for backend development.
 - **Google APIs**: Integration with Google Sheets and Calendar for data handling.
 
 ## Outcome
