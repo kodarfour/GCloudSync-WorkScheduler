@@ -17,7 +17,7 @@ This project is designed to automate the process of synchronizing work hours fro
 
 ## Technologies Used
 - **Google Cloud Platform (GCP)**: Utilizes various GCP services, including App Engine, Cloud Functions, Cloud Scheduler, and Pub/Sub.
-- **Programming Languages**: Python for backend development.
+- **Programming Language**: Python for backend development.
 - **Google APIs**: Integration with Google Sheets and Calendar for data handling.
 
 ## Outcome
