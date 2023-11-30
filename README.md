@@ -1,4 +1,4 @@
-# Automated Work Hours Synchronization and Reminder System
+# GCloudSync Work Schedueler, an Automated Work Hours Synchronization and Reminder System
 
 ## Project Description
 This project is designed to automate the process of synchronizing work hours from a Google Sheets document to Google Calendar and providing timely reminders before shifts. Utilizing the Google Cloud Platform (GCP) services, it comprises two primary components:
