@@ -4,7 +4,6 @@ from googleapiclient.errors import HttpError
 
 print("Hello GCloudSync")
 
-
 # Kofi Testing
 
 # Kofi Testing
