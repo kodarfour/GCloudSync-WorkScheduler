@@ -4,7 +4,7 @@ import dtale
 import re
 
 #NOTE DONT FORGET TO COMMENT OUT
-spreadsheetID = "**************"
+spreadsheetID = "********"
 #NOTE DONT FORGET TO COMMENT OUT
 
 
@@ -85,7 +85,11 @@ for agent_name, time_zone in agents.items():
         for slot_index in range(len(time_slots)):
             current_slot = time_slots[slot_index] # the current value of the time slot as we iterate
             if agent_name in current_slot:
-                agent_schedule[time_zone][agent_name][this_date].append(slot_index) # adds index of current slot if it matches agent name
+                match = re.search(":..", current_slot) # checking for unusual start times
+                if match:
+                    agent_schedule[time_zone][agent_name][this_date].append(str(slot_index) + " special" + match.group()) # Adds to the list with an extra marker
+                else:
+                    agent_schedule[time_zone][agent_name][this_date].append(slot_index) # adds index of current slot if it matches agent name
     # Deleted if statement for time zone because the loop in each was the same 
                 
 print("Debug Marker")  
