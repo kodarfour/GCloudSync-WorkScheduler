@@ -4,7 +4,7 @@ import dtale
 import re
 
 #NOTE DONT FORGET TO COMMENT OUT
-spreadsheetID = "********"
+spreadsheetID = "**********"
 #NOTE DONT FORGET TO COMMENT OUT
 
 
@@ -22,6 +22,19 @@ agents = {
 agent_schedule = {
     "Eastern" : dict(),
     "Pacific" : dict()
+}
+
+time_indexes = {
+    "Eastern" : ["08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
+                 "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
+                 "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
+                 "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM", "11:00PM-12:00AM",
+                 "12:00AM-01:00AM", "01:00AM-02:00AM"], 
+    "Pacific" : ["05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM", "08:00AM-09:00AM",
+                 "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM", "12:00PM-01:00PM",
+                 "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM", "04:00PM-05:00PM",
+                 "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM", "08:00PM-09:00PM",
+                 "09:00PM-10:00PM", "10:00PM-11:00PM"]
 }
 
 for agent_name, time_zone in agents.items():
@@ -87,9 +100,15 @@ for agent_name, time_zone in agents.items():
             if agent_name in current_slot:
                 match = re.search(":..", current_slot) # checking for unusual start times
                 if match:
-                    agent_schedule[time_zone][agent_name][this_date].append(str(slot_index) + " special" + match.group()) # Adds to the list with an extra marker
+                    agent_schedule[time_zone][agent_name][this_date].append(time_indexes[time_zone][slot_index] + " (" + match.group() + ")") # Adds to the list with an extra marker
                 else:
-                    agent_schedule[time_zone][agent_name][this_date].append(slot_index) # adds index of current slot if it matches agent name
+                    agent_schedule[time_zone][agent_name][this_date].append(time_indexes[time_zone][slot_index]) # adds index of current slot if it matches agent name
+            elif "Team meeting" in current_slot: # Checking for team meetings
+                match = re.search(":..", current_slot)
+                if match:
+                    agent_schedule[time_zone][agent_name][this_date].append(time_indexes[time_zone][slot_index] + " (TM)(" + match.group() + ")") 
+                else:
+                    agent_schedule[time_zone][agent_name][this_date].append(time_indexes[time_zone][slot_index] + " (TM)")
     # Deleted if statement for time zone because the loop in each was the same 
                 
 print("Debug Marker")  
