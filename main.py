@@ -1,9 +1,10 @@
 import gspread
 import pandas as pd 
 import dtale 
+import re
 
 #NOTE DONT FORGET TO COMMENT OUT
-spreadsheetID = "********************"
+spreadsheetID = "**************"
 #NOTE DONT FORGET TO COMMENT OUT
 
 
@@ -27,7 +28,7 @@ for agent_name, time_zone in agents.items():
     agent_schedule[time_zone] = {**agent_schedule[time_zone], agent_name : dict()}  #update timezone with new key:value pair
 
 """
-agent_schedule dictionairy structure
+agent_schedule dictionary structure
 {
     Eastern : { 
         agent1 : {
@@ -76,28 +77,21 @@ for week_index in range(0, len(structured_df), 19):
 currentWeek_df = weeks[-1]
 
 for agent_name, time_zone in agents.items():
-    if time_zone == "Eastern":
-        for i in range(1, 7):
-            time_slots = list(currentWeek_df.iloc[1:, i]) # list of all time slots (aka the names or blank spaces) for the "i" day of the week
-            this_date = list(currentWeek_df.iloc[:1, i])[0] # the current date of the iteration
-            agent_schedule[time_zone][agent_name] = {**agent_schedule[time_zone][agent_name], this_date : list()} #initializes the current date to a list
+    for i in range(1, 8): # Changed to 8 instead of 7 because python range() isn't inclusive to end
+        time_slots = list(currentWeek_df.iloc[1:, i]) # list of all time slots (aka the names or blank spaces) for the "i" day of the week
+        this_date = list(currentWeek_df.iloc[:1, i])[0] # the current date of the iteration
+        agent_schedule[time_zone][agent_name] = {**agent_schedule[time_zone][agent_name], this_date : list()} #initializes the current date to a list
+            
+        for slot_index in range(len(time_slots)):
+            current_slot = time_slots[slot_index] # the current value of the time slot as we iterate
+            if agent_name in current_slot:
+                agent_schedule[time_zone][agent_name][this_date].append(slot_index) # adds index of current slot if it matches agent name
+    # Deleted if statement for time zone because the loop in each was the same 
                 
-            for slot_index in range(len(time_slots)):
-                current_slot = time_slots[slot_index] # the current value of the time slot as we iterate
-                if current_slot == agent_name:
-                    agent_schedule[time_zone][agent_name][this_date].append(slot_index) # adds index of current slot if it matches agent name
-    elif time_zone == "Pacific":
-        for i in range(1, 7):
-            time_slots = list(currentWeek_df.iloc[1:, i])
-            this_date = list(currentWeek_df.iloc[:1, i])[0]
-            agent_schedule[time_zone][agent_name] = {**agent_schedule[time_zone][agent_name], this_date : list()}
-                
-            for slot_index in range(len(time_slots)):
-                current_slot = time_slots[slot_index]
-                if  current_slot == agent_name:
-                    agent_schedule[time_zone][agent_name][this_date].append(slot_index)
-          
 print("Debug Marker")  
+for zone in agent_schedule:
+    for agent in agent_schedule[zone]:
+        print(agent, agent_schedule[zone][agent])
                    
 # dtale.show(
 #     currentWeek_df,
