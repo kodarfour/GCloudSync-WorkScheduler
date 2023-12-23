@@ -4,9 +4,7 @@ import dtale
 import re
 
 confidential =  open("confidential.txt", "r")
-   
 spreadsheetID = confidential.readline().strip()
-
 confidential.close()
 
 agents = {
