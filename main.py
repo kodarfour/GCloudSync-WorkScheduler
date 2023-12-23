@@ -6,10 +6,6 @@ import re
 confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
 confidential.close()
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/zo-testing
 
 agents = {
     "Zo" : "Eastern",
@@ -28,6 +24,7 @@ agent_schedule = {
 }
 
 # Dictionary to hold the final shift times
+#NOTE UNHARD CODE
 shifts = {
     "Zo" : {},
     "Kofi" : {},
