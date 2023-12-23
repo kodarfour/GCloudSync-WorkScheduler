@@ -3,9 +3,8 @@ import pandas as pd
 import dtale 
 import re
 
-#NOTE DONT FORGET TO COMMENT OUT
-spreadsheetID = "**********"
-#NOTE DONT FORGET TO COMMENT OUT
+with open("confidential.txt") as input:
+    spreadsheetID = input.readline()
 
 
 agents = {
