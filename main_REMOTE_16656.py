@@ -6,10 +6,7 @@ import re
 confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
 confidential.close()
-<<<<<<< HEAD
-=======
 
->>>>>>> origin/zo-testing
 
 agents = {
     "Zo" : "Eastern",
