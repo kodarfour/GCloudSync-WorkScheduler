@@ -3,9 +3,11 @@ import pandas as pd
 import dtale 
 import re
 
-with open("confidential.txt") as input:
-    spreadsheetID = input.readline()
+confidential =  open("confidential.txt", "r")
+   
+spreadsheetID = confidential.readline().strip()
 
+confidential.close()
 
 agents = {
     "Zo" : "Eastern",
