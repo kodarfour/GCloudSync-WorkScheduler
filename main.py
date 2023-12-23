@@ -24,17 +24,9 @@ agent_schedule = {
 }
 
 # Dictionary to hold the final shift times
-#NOTE UNHARD CODE
-shifts = {
-    "Zo" : {},
-    "Kofi" : {},
-    "Breck" : {},
-    "Garrick" : {},
-    "Elijah" : {},
-    "Devin" : {},
-    "Wesley" : {},
-    "Jay" : {}
-}
+shifts =  dict()
+for agent in agents.keys():
+    shifts[agent] = dict()
 
 # What each time slot index corresponds to depending on time zone
 time_indexes = {
