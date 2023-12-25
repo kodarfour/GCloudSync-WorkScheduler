@@ -7,33 +7,20 @@ confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
 confidential.close()
 
-"""
-------------Timezones:----------------
-
-Eastern Time: America/New_York 
-
-Pacific Time: America/Los_Angeles
-
-Central Time: America/Chicago 
-
-Mountain Time: America/Denver 
-
-Alaska: America/Anchorage 
-
-Hawaii: Pacific/Honolulu 
-
-Arizona (most areas): America/Phoenix 
-
-Puerto Rico: America/Puerto_Rico 
-
-Guam: Pacific/Guam 
-
-American Samoa: Pacific/Pago_Pago 
-
-Northern Mariana Islands: 
-
-Virgin Islands: America/St_Thomas 
-"""
+agent_schedule = {
+    "America/New_York": dict(),         # Eastern Time
+    "America/Los_Angeles": dict(),      # Pacific Time
+    "America/Chicago": dict(),          # Central Time
+    "America/Denver": dict(),           # Mountain Time
+    "America/Anchorage": dict(),        # Alaska
+    "Pacific/Honolulu": dict(),         # Hawaii
+    "America/Phoenix": dict(),          # Arizona
+    "America/Puerto_Rico": dict(),      # Puerto Rico
+    "Pacific/Guam": dict(),             # Guam
+    "Pacific/Pago_Pago": dict(),        # American Samoa
+    "Northern_Mariana_Islands": dict(), # Northern Mariana Islands
+    "America/St_Thomas": dict()         # Virgin Islands
+}
 
 agents = {
     "Zo" : "America/New_York",
@@ -46,11 +33,6 @@ agents = {
     "Jay" : "America/Los_Angeles"
 }
 
-agent_schedule = {
-    "America/New_York" : dict(),
-    "America/Los_Angeles" : dict()
-}
-
 # Dictionary to hold the final shift times
 shifts =  dict()
 for agent in agents.keys():
@@ -58,32 +40,106 @@ for agent in agents.keys():
 
 # What each time slot index corresponds to depending on time zone
 time_indexes = {
-    "America/New_York" : ["08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
-                 "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
-                 "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
-                 "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM", "11:00PM-12:00AM",
-                 "12:00AM-01:00AM", "01:00AM-02:00AM"], 
-    "America/Los_Angeles" : ["05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM", "08:00AM-09:00AM",
-                 "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM", "12:00PM-01:00PM",
-                 "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM", "04:00PM-05:00PM",
-                 "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM", "08:00PM-09:00PM",
-                 "09:00PM-10:00PM", "10:00PM-11:00PM"]
+    "America/New_York": [
+        "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
+        "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
+        "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
+        "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM", "11:00PM-12:00AM",
+        "12:00AM-01:00AM", "01:00AM-02:00AM"
+    ],
+    "America/Los_Angeles": [
+        "05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM", "08:00AM-09:00AM",
+        "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM", "12:00PM-01:00PM",
+        "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM", "04:00PM-05:00PM",
+        "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM", "08:00PM-09:00PM",
+        "09:00PM-10:00PM", "10:00PM-11:00PM"
+    ],
+    "America/Chicago": [
+        "07:00AM-08:00AM", "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM",
+        "11:00AM-12:00PM", "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM",
+        "03:00PM-04:00PM", "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM",
+        "07:00PM-08:00PM", "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM",
+        "11:00PM-12:00AM", "12:00AM-01:00AM"
+    ],
+    "America/Denver": [
+        "06:00AM-07:00AM", "07:00AM-08:00AM", "08:00AM-09:00AM", "09:00AM-10:00AM",
+        "10:00AM-11:00AM", "11:00AM-12:00PM", "12:00PM-01:00PM", "01:00PM-02:00PM",
+        "02:00PM-03:00PM", "03:00PM-04:00PM", "04:00PM-05:00PM", "05:00PM-06:00PM",
+        "06:00PM-07:00PM", "07:00PM-08:00PM", "08:00PM-09:00PM", "09:00PM-10:00PM",
+        "10:00PM-11:00PM", "11:00PM-12:00AM"
+    ],
+    "America/Anchorage": [
+        "04:00AM-05:00AM", "05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM",
+        "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
+        "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
+        "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
+        "08:00PM-09:00PM", "09:00PM-10:00PM"
+    ],
+    "Pacific/Honolulu": [
+        "03:00AM-04:00AM", "04:00AM-05:00AM", "05:00AM-06:00AM", "06:00AM-07:00AM",
+        "07:00AM-08:00AM", "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM",
+        "11:00AM-12:00PM", "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM",
+        "03:00PM-04:00PM", "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM",
+        "07:00PM-08:00PM", "08:00PM-09:00PM"
+    ],
+    "America/Phoenix": [
+        "04:00AM-05:00AM", "05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM",
+        "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
+        "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
+        "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
+        "08:00PM-09:00PM", "09:00PM-10:00PM"
+    ],
+    "America/Puerto_Rico": [
+        "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
+        "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
+        "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
+        "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM", "11:00PM-12:00AM",
+        "12:00AM-01:00AM", "01:00AM-02:00AM"
+    ],
+    "Pacific/Guam": [
+        "11:00PM-12:00AM (PREV DAY)", "12:00AM-01:00AM", "01:00AM-02:00AM", "02:00AM-03:00AM",
+        "03:00AM-04:00AM", "04:00AM-05:00AM", "05:00AM-06:00AM", "06:00AM-07:00AM",
+        "07:00AM-08:00AM", "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM",
+        "11:00AM-12:00PM", "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM",
+        "03:00PM-04:00PM", "04:00PM-05:00PM"
+    ],
+    "Pacific/Pago_Pago": [
+        "09:00PM-10:00PM (PREV DAY)", "10:00PM-11:00PM (PREV DAY)", "11:00PM-12:00AM", "12:00AM-01:00AM",
+        "01:00AM-02:00AM", "02:00AM-03:00AM", "03:00AM-04:00AM", "04:00AM-05:00AM",
+        "05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM", "08:00AM-09:00AM",
+        "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM", "12:00PM-01:00PM",
+        "01:00PM-02:00PM", "02:00PM-03:00PM"
+    ],
+    "Northern_Mariana_Islands": [
+        "11:00PM-12:00AM (PREV DAY)", "12:00AM-01:00AM", "01:00AM-02:00AM", "02:00AM-03:00AM",
+        "03:00AM-04:00AM", "04:00AM-05:00AM", "05:00AM-06:00AM", "06:00AM-07:00AM",
+        "07:00AM-08:00AM", "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM",
+        "11:00AM-12:00PM", "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM",
+        "03:00PM-04:00PM", "04:00PM-05:00PM"
+    ],
+    "America/St_Thomas": [
+        "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
+        "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
+        "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
+        "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM", "11:00PM-12:00AM",
+        "12:00AM-01:00AM", "01:00AM-02:00AM"
+    ]
 }
 
 for agent_name, time_zone in agents.items():
-    agent_schedule[time_zone] = {**agent_schedule[time_zone], agent_name : dict()}  #update timezone with new key:value pair
+    agent_schedule[time_zone] = {**agent_schedule[time_zone], agent_name : dict()}  #update timezone(key) value pair with a new key:value pair (agent name : {date : shifts})
 
 """
 agent_schedule dictionary structure
 {
     Eastern : { 
         agent1 : {
-            date1 : [time_range],
-            date2 : [time_range]
+            date1 : [shifts],
+            date2 : [shifts]
             },
         agent2 : {
-            date1 : [time_range],
-            date2 : [time_range]
+            date1 : [shifts],
+            date2 : [shifts]
             }
         }
     },
@@ -91,12 +147,12 @@ agent_schedule dictionary structure
 
     Pacific : { 
         agent1 : {
-            date1 : [time_range],
-            date2 : [time_range]
+            date1 : [shifts],
+            date2 : [shifts]
             },
         agent2 : {
-            date1 : [time_range],
-            date2 : [time_range]
+            date1 : [shifts],
+            date2 : [shifts]
             }
         }
     }
