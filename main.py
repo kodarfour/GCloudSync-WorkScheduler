@@ -7,20 +7,48 @@ confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
 confidential.close()
 
+"""
+------------Timezones:----------------
+
+Eastern Time: America/New_York 
+
+Pacific Time: America/Los_Angeles
+
+Central Time: America/Chicago 
+
+Mountain Time: America/Denver 
+
+Alaska: America/Anchorage 
+
+Hawaii: Pacific/Honolulu 
+
+Arizona (most areas): America/Phoenix 
+
+Puerto Rico: America/Puerto_Rico 
+
+Guam: Pacific/Guam 
+
+American Samoa: Pacific/Pago_Pago 
+
+Northern Mariana Islands: 
+
+Virgin Islands: America/St_Thomas 
+"""
+
 agents = {
-    "Zo" : "Eastern",
-    "Kofi" : "Eastern",
-    "Breck" : "Pacific",
-    "Garrick" : "Pacific",
-    "Elijah" : "Pacific",
-    "Devin" : "Eastern",
-    "Wesley" : "Pacific",
-    "Jay" : "Pacific"
+    "Zo" : "America/New_York",
+    "Kofi" : "America/New_York",
+    "Breck" : "America/Los_Angeles",
+    "Garrick" : "America/Los_Angeles",
+    "Elijah" : "America/Los_Angeles",
+    "Devin" : "America/New_York",
+    "Wesley" : "America/Los_Angeles",
+    "Jay" : "America/Los_Angeles"
 }
 
 agent_schedule = {
-    "Eastern" : dict(),
-    "Pacific" : dict()
+    "America/New_York" : dict(),
+    "America/Los_Angeles" : dict()
 }
 
 # Dictionary to hold the final shift times
@@ -30,12 +58,12 @@ for agent in agents.keys():
 
 # What each time slot index corresponds to depending on time zone
 time_indexes = {
-    "Eastern" : ["08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
+    "America/New_York" : ["08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
                  "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
                  "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
                  "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM", "11:00PM-12:00AM",
                  "12:00AM-01:00AM", "01:00AM-02:00AM"], 
-    "Pacific" : ["05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM", "08:00AM-09:00AM",
+    "America/Los_Angeles" : ["05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM", "08:00AM-09:00AM",
                  "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM", "12:00PM-01:00PM",
                  "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM", "04:00PM-05:00PM",
                  "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM", "08:00PM-09:00PM",
