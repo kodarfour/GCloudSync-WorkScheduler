@@ -7,6 +7,28 @@ confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
 confidential.close()
 
+agents = {
+    "Zo" : "America/New_York",
+    "Kofi" : "America/New_York",
+    "Breck" : "America/Los_Angeles",
+    "Garrick" : "America/Los_Angeles",
+    "Elijah" : "America/Los_Angeles",
+    "Devin" : "America/New_York",
+    "Wesley" : "America/Los_Angeles",
+    "Jay" : "America/Los_Angeles"
+}
+
+agents_email = {
+    "Zo" : "zohaibk1204@gmail.com",
+    "Kofi" : "kodarfour@gmail.com",
+    "Breck" : ".com",
+    "Garrick" : ".com",
+    "Elijah" : ".com",
+    "Devin" : ".com",
+    "Wesley" : ".com",
+    "Jay" : ".com"
+}
+
 agent_schedule = {
     "America/New_York": dict(),         # Eastern Time
     "America/Los_Angeles": dict(),      # Pacific Time
@@ -22,17 +44,6 @@ agent_schedule = {
     "America/St_Thomas": dict()         # Virgin Islands
 }
 
-agents = {
-    "Zo" : "America/New_York",
-    "Kofi" : "America/New_York",
-    "Breck" : "America/Los_Angeles",
-    "Garrick" : "America/Los_Angeles",
-    "Elijah" : "America/Los_Angeles",
-    "Devin" : "America/New_York",
-    "Wesley" : "America/Los_Angeles",
-    "Jay" : "America/Los_Angeles"
-}
-
 # Dictionary to hold the final shift times
 shifts =  dict()
 for agent in agents.keys():
@@ -40,89 +51,89 @@ for agent in agents.keys():
 
 # What each time slot index corresponds to depending on time zone
 time_indexes = {
-    "America/New_York": [
-        "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
-        "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
-        "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
-        "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM", "11:00PM-12:00AM",
-        "12:00AM-01:00AM", "01:00AM-02:00AM"
+    'America/New_York': [
+        '08:00-09:00', '09:00-10:00', '10:00-11:00', '11:00-12:00', 
+        '12:00-13:00', '13:00-14:00', '14:00-15:00', '15:00-16:00', 
+        '16:00-17:00', '17:00-18:00', '18:00-19:00', '19:00-20:00', 
+        '20:00-21:00', '21:00-22:00', '22:00-23:00', '23:00-00:00', 
+        '00:00-01:00', '01:00-02:00'
     ],
-    "America/Los_Angeles": [
-        "05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM", "08:00AM-09:00AM",
-        "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM", "12:00PM-01:00PM",
-        "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM", "04:00PM-05:00PM",
-        "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM", "08:00PM-09:00PM",
-        "09:00PM-10:00PM", "10:00PM-11:00PM"
+    'America/Los_Angeles': [
+        '05:00-06:00', '06:00-07:00', '07:00-08:00', '08:00-09:00', 
+        '09:00-10:00', '10:00-11:00', '11:00-12:00', '12:00-13:00', 
+        '13:00-14:00', '14:00-15:00', '15:00-16:00', '16:00-17:00', 
+        '17:00-18:00', '18:00-19:00', '19:00-20:00', '20:00-21:00', 
+        '21:00-22:00', '22:00-23:00'
     ],
-    "America/Chicago": [
-        "07:00AM-08:00AM", "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM",
-        "11:00AM-12:00PM", "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM",
-        "03:00PM-04:00PM", "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM",
-        "07:00PM-08:00PM", "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM",
-        "11:00PM-12:00AM", "12:00AM-01:00AM"
+    'America/Chicago': [
+        '07:00-08:00', '08:00-09:00', '09:00-10:00', '10:00-11:00', 
+        '11:00-12:00', '12:00-13:00', '13:00-14:00', '14:00-15:00', 
+        '15:00-16:00', '16:00-17:00', '17:00-18:00', '18:00-19:00', 
+        '19:00-20:00', '20:00-21:00', '21:00-22:00', '22:00-23:00', 
+        '23:00-00:00', '00:00-01:00'
     ],
-    "America/Denver": [
-        "06:00AM-07:00AM", "07:00AM-08:00AM", "08:00AM-09:00AM", "09:00AM-10:00AM",
-        "10:00AM-11:00AM", "11:00AM-12:00PM", "12:00PM-01:00PM", "01:00PM-02:00PM",
-        "02:00PM-03:00PM", "03:00PM-04:00PM", "04:00PM-05:00PM", "05:00PM-06:00PM",
-        "06:00PM-07:00PM", "07:00PM-08:00PM", "08:00PM-09:00PM", "09:00PM-10:00PM",
-        "10:00PM-11:00PM", "11:00PM-12:00AM"
+    'America/Denver': [
+        '06:00-07:00', '07:00-08:00', '08:00-09:00', '09:00-10:00', 
+        '10:00-11:00', '11:00-12:00', '12:00-13:00', '13:00-14:00', 
+        '14:00-15:00', '15:00-16:00', '16:00-17:00', '17:00-18:00', 
+        '18:00-19:00', '19:00-20:00', '20:00-21:00', '21:00-22:00', 
+        '22:00-23:00', '23:00-00:00'
     ],
     "America/Anchorage": [
-        "04:00AM-05:00AM", "05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM",
-        "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
-        "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
-        "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
-        "08:00PM-09:00PM", "09:00PM-10:00PM"
+        "04:00-05:00", "05:00-06:00", "06:00-07:00", "07:00-08:00",
+        "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00",
+        "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00",
+        "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00",
+        "20:00-21:00", "21:00-22:00"
     ],
     "Pacific/Honolulu": [
-        "03:00AM-04:00AM", "04:00AM-05:00AM", "05:00AM-06:00AM", "06:00AM-07:00AM",
-        "07:00AM-08:00AM", "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM",
-        "11:00AM-12:00PM", "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM",
-        "03:00PM-04:00PM", "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM",
-        "07:00PM-08:00PM", "08:00PM-09:00PM"
+        "03:00-04:00", "04:00-05:00", "05:00-06:00", "06:00-07:00",
+        "07:00-08:00", "08:00-09:00", "09:00-10:00", "10:00-11:00",
+        "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00",
+        "15:00-16:00", "16:00-17:00", "17:00-18:00", "18:00-19:00",
+        "19:00-20:00", "20:00-21:00"
     ],
     "America/Phoenix": [
-        "04:00AM-05:00AM", "05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM",
-        "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
-        "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
-        "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
-        "08:00PM-09:00PM", "09:00PM-10:00PM"
+        "04:00-05:00", "05:00-06:00", "06:00-07:00", "07:00-08:00",
+        "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00",
+        "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00",
+        "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00",
+        "20:00-21:00", "21:00-22:00"
     ],
     "America/Puerto_Rico": [
-        "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
-        "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
-        "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
-        "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM", "11:00PM-12:00AM",
-        "12:00AM-01:00AM", "01:00AM-02:00AM"
+        "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00",
+        "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00",
+        "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00",
+        "20:00-21:00", "21:00-22:00", "22:00-23:00", "23:00-00:00",
+        "00:00-01:00", "01:00-02:00"
     ],
     "Pacific/Guam": [
-        "11:00PM-12:00AM (PREV DAY)", "12:00AM-01:00AM", "01:00AM-02:00AM", "02:00AM-03:00AM",
-        "03:00AM-04:00AM", "04:00AM-05:00AM", "05:00AM-06:00AM", "06:00AM-07:00AM",
-        "07:00AM-08:00AM", "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM",
-        "11:00AM-12:00PM", "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM",
-        "03:00PM-04:00PM", "04:00PM-05:00PM"
+        "23:00-00:00 (PREV DAY)", "00:00-01:00", "01:00-02:00", "02:00-03:00",
+        "03:00-04:00", "04:00-05:00", "05:00-06:00", "06:00-07:00",
+        "07:00-08:00", "08:00-09:00", "09:00-10:00", "10:00-11:00",
+        "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00",
+        "15:00-16:00", "16:00-17:00"
     ],
     "Pacific/Pago_Pago": [
-        "09:00PM-10:00PM (PREV DAY)", "10:00PM-11:00PM (PREV DAY)", "11:00PM-12:00AM", "12:00AM-01:00AM",
-        "01:00AM-02:00AM", "02:00AM-03:00AM", "03:00AM-04:00AM", "04:00AM-05:00AM",
-        "05:00AM-06:00AM", "06:00AM-07:00AM", "07:00AM-08:00AM", "08:00AM-09:00AM",
-        "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM", "12:00PM-01:00PM",
-        "01:00PM-02:00PM", "02:00PM-03:00PM"
+        "21:00-22:00 (PREV DAY)", "22:00-23:00 (PREV DAY)", "23:00-00:00", "00:00-01:00",
+        "01:00-02:00", "02:00-03:00", "03:00-04:00", "04:00-05:00",
+        "05:00-06:00", "06:00-07:00", "07:00-08:00", "08:00-09:00",
+        "09:00-10:00", "10:00-11:00", "11:00-12:00", "12:00-13:00",
+        "13:00-14:00", "14:00-15:00"
     ],
     "Northern_Mariana_Islands": [
-        "11:00PM-12:00AM (PREV DAY)", "12:00AM-01:00AM", "01:00AM-02:00AM", "02:00AM-03:00AM",
-        "03:00AM-04:00AM", "04:00AM-05:00AM", "05:00AM-06:00AM", "06:00AM-07:00AM",
-        "07:00AM-08:00AM", "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM",
-        "11:00AM-12:00PM", "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM",
-        "03:00PM-04:00PM", "04:00PM-05:00PM"
+        "23:00-00:00 (PREV DAY)", "00:00-01:00", "01:00-02:00", "02:00-03:00",
+        "03:00-04:00", "04:00-05:00", "05:00-06:00", "06:00-07:00",
+        "07:00-08:00", "08:00-09:00", "09:00-10:00", "10:00-11:00",
+        "11:00-12:00", "12:00-13:00", "13:00-14:00", "14:00-15:00",
+        "15:00-16:00", "16:00-17:00"
     ],
     "America/St_Thomas": [
-        "08:00AM-09:00AM", "09:00AM-10:00AM", "10:00AM-11:00AM", "11:00AM-12:00PM",
-        "12:00PM-01:00PM", "01:00PM-02:00PM", "02:00PM-03:00PM", "03:00PM-04:00PM",
-        "04:00PM-05:00PM", "05:00PM-06:00PM", "06:00PM-07:00PM", "07:00PM-08:00PM",
-        "08:00PM-09:00PM", "09:00PM-10:00PM", "10:00PM-11:00PM", "11:00PM-12:00AM",
-        "12:00AM-01:00AM", "01:00AM-02:00AM"
+        "08:00-09:00", "09:00-10:00", "10:00-11:00", "11:00-12:00",
+        "12:00-13:00", "13:00-14:00", "14:00-15:00", "15:00-16:00",
+        "16:00-17:00", "17:00-18:00", "18:00-19:00", "19:00-20:00",
+        "20:00-21:00", "21:00-22:00", "22:00-23:00", "23:00-00:00",
+        "00:00-01:00", "01:00-02:00"
     ]
 }
 
@@ -168,7 +179,7 @@ data = worksheet.get_all_values()
 
 df = pd.DataFrame(data)
 
-structured_df = df.drop(columns=[9, 10, 11, 12, 13, 14]) # drops all columns except for eastern/pacific times and dates
+structured_df = df.drop(columns=[9, 10, 11, 12, 13, 14]) #minimizes to only needed columns in spreadsheet
 
 weeks = list()
 
@@ -179,26 +190,26 @@ for week_index in range(0, len(structured_df), 19):
 currentWeek_df = weeks[-1]
 
 for agent_name, time_zone in agents.items():
-    for i in range(1, 8): # Changed to 8 instead of 7 because python range() isn't inclusive to end
-        time_slots = list(currentWeek_df.iloc[1:, i]) # list of all time slots (aka the names or blank spaces) for the "i" day of the week
-        this_date = list(currentWeek_df.iloc[:1, i])[0] # the current date of the iteration
-        agent_schedule[time_zone][agent_name] = {**agent_schedule[time_zone][agent_name], this_date : list()} #initializes the current date to a list
-        shifts[agent_name] = {**shifts[agent_name], this_date : list()}
+    for i in range(1, 8): 
+        time_slots = list(currentWeek_df.iloc[1:, i]) 
+        current_date = list(currentWeek_df.iloc[:1, i])[0]
+        agent_schedule[time_zone][agent_name] = {**agent_schedule[time_zone][agent_name], current_date : list()}
+        shifts[agent_name] = {**shifts[agent_name], current_date : list()}
             
         for slot_index in range(len(time_slots)):
-            current_slot = time_slots[slot_index] # the current value of the time slot as we iterate
+            current_slot = time_slots[slot_index]
             if agent_name in current_slot:
                 match = re.search(":..", current_slot) # checking for unusual start times
                 if match:
-                    agent_schedule[time_zone][agent_name][this_date].append(time_indexes[time_zone][slot_index] + " (" + match.group() + ")") # Adds to the list with an extra marker
+                    agent_schedule[time_zone][agent_name][current_date].append(time_indexes[time_zone][slot_index] + " (" + match.group() + ")") 
                 else:
-                    agent_schedule[time_zone][agent_name][this_date].append(time_indexes[time_zone][slot_index]) # adds index of current slot if it matches agent name
-            elif "Team meeting" in current_slot: # Checking for team meetings
+                    agent_schedule[time_zone][agent_name][current_date].append(time_indexes[time_zone][slot_index])
+            elif "Team meeting" in current_slot:
                 match = re.search(":..", current_slot)
                 if match:
-                    agent_schedule[time_zone][agent_name][this_date].append(time_indexes[time_zone][slot_index] + " (TM)(" + match.group() + ")") 
+                    agent_schedule[time_zone][agent_name][current_date].append(time_indexes[time_zone][slot_index] + " (TM)(" + match.group() + ")") 
                 else:
-                    agent_schedule[time_zone][agent_name][this_date].append(time_indexes[time_zone][slot_index] + " (TM)")
+                    agent_schedule[time_zone][agent_name][current_date].append(time_indexes[time_zone][slot_index] + " (TM)")
     # Deleted if statement for time zone because the loop in each was the same 
                 
 # print("Debug Marker")  
@@ -208,20 +219,21 @@ for agent_name, time_zone in agents.items():
 
 
 for time_zone in agent_schedule:
-    for agent in agent_schedule[time_zone]:
-        for date in agent_schedule[time_zone][agent]:
-            times = agent_schedule[time_zone][agent][date]
-            searching = False # When True, it is currently in a series of sequential time periods
+    for agent_name in agent_schedule[time_zone]:
+        for date in agent_schedule[time_zone][agent_name]:
+            times = agent_schedule[time_zone][agent_name][date]
+            searching = False 
             new_time = "00:00AM-00:00AM" # Starter values for before the loop
-            last_time = "00:00AM" # new_time is the shift hours, last_time checks if we are still in a series
+            last_time = "00:00" # new_time is the shift hours, last_time checks if we are still in a series
             for period in times:
                 match = re.search("\(:..\)", period) # Looks for unusual shift times, match is further used to change minute times
                 if "(TM)" in period: # Team meetings are considered a separate shift for everyone
                     if match:
-                        new_period = period[:3] + match.group()[2:4] + period[5:11] + match.group()[2:4] + period[13:15]
-                        shifts[agent][date].append(new_period+" (TM)") # Added with a (TM) marker to differentiate
+                        new_period = period[:3] + match.group()[2:4] + period[5:9] + match.group()[2:4]
+                        
+                        shifts[agent_name][date].append(new_period+" (TM)") # Added with a (TM) marker to differentiate
                     else:
-                        shifts[agent][date].append(period[:15]+" (TM)") # added without changing minute times
+                        shifts[agent_name][date].append(period[:15]+" (TM)") # added without changing minute times
                     continue
                 if not searching: # starting a new series of sequential time periods (beginning of shift)
                     new_time = period
@@ -231,7 +243,7 @@ for time_zone in agent_schedule:
                     searching = True
                     continue
                 if searching and period[:7] != last_time: # When we come to the end of a sequential time period (end of shift)
-                    shifts[agent][date].append(new_time) # This method also accounts for multiple shifts on the same day
+                    shifts[agent_name][date].append(new_time) # This method also accounts for multiple shifts on the same day
                     searching = False # Resets variables to the original starting values to start a fresh shift
                     new_time = "00:00AM-00:00AM"
                     last_time = "00:00AM"
@@ -242,9 +254,9 @@ for time_zone in agent_schedule:
                         new_time = new_time[:8] + period[8:15]
                     last_time = period[8:15]
             if new_time != "00:00AM-00:00AM": # Ensures sure the placeholder shift is not added
-                shifts[agent][date].append(new_time)
-            if not shifts[agent][date]: # Deletes any days with no shifts from the dictionary
-                del shifts[agent][date]
+                shifts[agent_name][date].append(new_time)
+            if not shifts[agent_name][date]: # Deletes any days with no shifts from the dictionary
+                del shifts[agent_name][date]
 
 for agent in shifts: # Printing out shifts to check
     print(agent+":")
