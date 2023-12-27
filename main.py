@@ -1,6 +1,6 @@
 import gspread
 import pandas as pd 
-import dtale 
+#import dtale 
 import re
 
 confidential =  open("confidential.txt", "r")
@@ -8,25 +8,16 @@ spreadsheetID = confidential.readline().strip()
 confidential.close()
 
 agents = {
-    "Zo" : "America/New_York",
-    "Kofi" : "America/New_York",
-    "Breck" : "America/Los_Angeles",
-    "Garrick" : "America/Los_Angeles",
-    "Elijah" : "America/Los_Angeles",
-    "Devin" : "America/New_York",
-    "Wesley" : "America/Los_Angeles",
-    "Jay" : "America/Los_Angeles"
-}
-
-agents_email = {
-    "Zo" : "zohaibk1204@gmail.com",
-    "Kofi" : "kodarfour@gmail.com",
-    "Breck" : ".com",
-    "Garrick" : ".com",
-    "Elijah" : ".com",
-    "Devin" : ".com",
-    "Wesley" : ".com",
-    "Jay" : ".com"
+    #example:
+    #"agent name" : ["time/zone", "email@address.com"],
+    "Zo" : ["America/New_York", "zohaibk1204@gmail.com"],
+    "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
+    "Breck" : ["America/Los_Angeles", "email"],
+    "Garrick" : ["America/Los_Angeles",  "email"],
+    "Elijah" : ["America/Los_Angeles",  "email"],
+    "Devin" : ["America/New_York",  "email"],
+    "Wesley" : ["America/Los_Angeles",  "email"],
+    "Jay" : ["America/Los_Angeles", "email"] ,
 }
 
 agent_schedule = {
@@ -43,11 +34,6 @@ agent_schedule = {
     "Northern_Mariana_Islands": dict(), # Northern Mariana Islands
     "America/St_Thomas": dict()         # Virgin Islands
 }
-
-# Dictionary to hold the final shift times
-shifts =  dict()
-for agent in agents.keys():
-    shifts[agent] = dict()
 
 # What each time slot index corresponds to depending on time zone
 time_indexes = {
@@ -137,11 +123,12 @@ time_indexes = {
     ]
 }
 
-for agent_name, time_zone in agents.items():
-    agent_schedule[time_zone] = {**agent_schedule[time_zone], agent_name : dict()}  #update timezone(key) value pair with a new key:value pair (agent name : {date : shifts})
+for agent_name, agent_info in agents.items():
+    time_zone = agent_info[0]
+    agent_schedule[time_zone] = {**agent_schedule[time_zone], agent_name : dict()} 
 
 """
-agent_schedule dictionary structure
+agent_schedule dictionary structure ^^^
 {
     Eastern : { 
         agent1 : {
@@ -189,87 +176,83 @@ for week_index in range(0, len(structured_df), 19):
 
 currentWeek_df = weeks[-1]
 
-for agent_name, time_zone in agents.items():
+for agent_name, agent_info in agents.items(): # algorithim that groups shifts within each date
+    time_zone = agent_info[0]
     for i in range(1, 8): 
         time_slots = list(currentWeek_df.iloc[1:, i]) 
         current_date = list(currentWeek_df.iloc[:1, i])[0]
         agent_schedule[time_zone][agent_name] = {**agent_schedule[time_zone][agent_name], current_date : list()}
-        shifts[agent_name] = {**shifts[agent_name], current_date : list()}
-            
+        prev_slot_index = 100000000000000000
+        shift_count = 0
         for slot_index in range(len(time_slots)):
             current_slot = time_slots[slot_index]
             if agent_name in current_slot:
-                match = re.search(":..", current_slot) # checking for unusual start times
-                if match:
-                    agent_schedule[time_zone][agent_name][current_date].append(time_indexes[time_zone][slot_index] + " (" + match.group() + ")") 
-                else:
-                    agent_schedule[time_zone][agent_name][current_date].append(time_indexes[time_zone][slot_index])
+                match = re.search(":..", current_slot) # checking for custom start times
+                if match: # if custom minutes found for shift period
+                    custom_minutes = match.group()
+                    if slot_index - prev_slot_index < 0: # if period is first in shift set
+                        agent_schedule[time_zone][agent_name][current_date].append(list())
+                        first_hour = time_indexes[time_zone][slot_index][:2] 
+                        remaining_time = time_indexes[time_zone][slot_index][5:]
+                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(first_hour + custom_minutes  + remaining_time) 
+                        prev_slot_index = slot_index
+                    elif slot_index - prev_slot_index == 1: # if shift period isn't first AND concurrent in shift set
+                        time_before_custom_minutes = time_indexes[time_zone][slot_index][:8]
+                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(time_before_custom_minutes + custom_minutes)
+                        prev_slot_index = slot_index
+                    else: # if not in current shift set
+                        shift_count += 1
+                        agent_schedule[time_zone][agent_name][current_date].append(list())
+                        first_hour = time_indexes[time_zone][slot_index][:3] 
+                        remaining_time = time_indexes[time_zone][slot_index][5:]
+                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(first_hour + custom_minutes  + remaining_time) 
+                        prev_slot_index = slot_index
+                else: # if custom minutes isn't found for shift period
+                    if slot_index - prev_slot_index == 1: 
+                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(time_indexes[time_zone][slot_index])
+                        prev_slot_index = slot_index
+                    else: 
+                        if slot_index - prev_slot_index > 1: # if not in current shift set
+                            shift_count += 1
+                        agent_schedule[time_zone][agent_name][current_date].append(list())
+                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(time_indexes[time_zone][slot_index])
+                        prev_slot_index = slot_index
             elif "Team meeting" in current_slot:
                 match = re.search(":..", current_slot)
-                if match:
-                    agent_schedule[time_zone][agent_name][current_date].append(time_indexes[time_zone][slot_index] + " (TM)(" + match.group() + ")") 
-                else:
-                    agent_schedule[time_zone][agent_name][current_date].append(time_indexes[time_zone][slot_index] + " (TM)")
-    # Deleted if statement for time zone because the loop in each was the same 
-                
-# print("Debug Marker")  
-# for zone in agent_schedule:
-#     for agent in agent_schedule[zone]:
-#         print(agent, agent_schedule[zone][agent])
-
-
-for time_zone in agent_schedule:
-    for agent_name in agent_schedule[time_zone]:
-        for date in agent_schedule[time_zone][agent_name]:
-            times = agent_schedule[time_zone][agent_name][date]
-            searching = False 
-            new_time = "00:00AM-00:00AM" # Starter values for before the loop
-            last_time = "00:00" # new_time is the shift hours, last_time checks if we are still in a series
-            for period in times:
-                match = re.search("\(:..\)", period) # Looks for unusual shift times, match is further used to change minute times
-                if "(TM)" in period: # Team meetings are considered a separate shift for everyone
-                    if match:
-                        new_period = period[:3] + match.group()[2:4] + period[5:9] + match.group()[2:4]
-                        
-                        shifts[agent_name][date].append(new_period+" (TM)") # Added with a (TM) marker to differentiate
-                    else:
-                        shifts[agent_name][date].append(period[:15]+" (TM)") # added without changing minute times
-                    continue
-                if not searching: # starting a new series of sequential time periods (beginning of shift)
-                    new_time = period
-                    if match:
-                        new_time = period[:3] + match.group()[2:4] + period[5:15]
-                    last_time = period[8:15]
-                    searching = True
-                    continue
-                if searching and period[:7] != last_time: # When we come to the end of a sequential time period (end of shift)
-                    shifts[agent_name][date].append(new_time) # This method also accounts for multiple shifts on the same day
-                    searching = False # Resets variables to the original starting values to start a fresh shift
-                    new_time = "00:00AM-00:00AM"
-                    last_time = "00:00AM"
-                else: # If we are still "in" the shift, it will update the second half of the new_time variable (with unusual minute values if needed)
-                    if match:
-                        new_time = new_time[:8] + period[:3] + match.group()[2:4] + period[5:7]
-                    else:
-                        new_time = new_time[:8] + period[8:15]
-                    last_time = period[8:15]
-            if new_time != "00:00AM-00:00AM": # Ensures sure the placeholder shift is not added
-                shifts[agent_name][date].append(new_time)
-            if not shifts[agent_name][date]: # Deletes any days with no shifts from the dictionary
-                del shifts[agent_name][date]
-
-for agent in shifts: # Printing out shifts to check
-    print(agent+":")
-    for date in shifts[agent]:
-        print("  ",date+":",shifts[agent][date])
-
+                if match: # if custom minutes found for team meeting period
+                    custom_minutes = match.group()
+                    if slot_index - prev_slot_index > 0: # if there is a shift  already in shift set, must create new shift  for TM
+                        shift_count += 1
+                    agent_schedule[time_zone][agent_name][current_date].append(list())
+                    first_hour = time_indexes[time_zone][slot_index][:2] 
+                    second_hour = time_indexes[time_zone][slot_index][6:8]
+                    agent_schedule[time_zone][agent_name][current_date][shift_count].append(first_hour + custom_minutes + "-" + second_hour + custom_minutes + " (TM)")
+                    if slot_index - prev_slot_index < 0: #if team meeting period is first in shift set
+                        shift_count += 1                        
+                else: # if custom minutes isn't found for team meeting period
+                    if slot_index - prev_slot_index > 0:
+                        shift_count += 1
+                    agent_schedule[time_zone][agent_name][current_date].append(list())
+                    agent_schedule[time_zone][agent_name][current_date][shift_count].append(time_indexes[time_zone][slot_index] + " (TM)")
+                    if slot_index - prev_slot_index < 0: 
+                        shift_count += 1
        
-
-                   
-# dtale.show(
-#     currentWeek_df,
-#     host= 'localhost', 
-#     port = 4000, 
-#     subprocess = False, 
-#     force = True 
-#     )
+for time_zone in agent_schedule:
+    if len(list(agent_schedule[time_zone].keys())) == 0: #if there are no agents in current time_zone skip
+        pass
+    else:
+        for agent_name in agent_schedule[time_zone]:
+            print(agent_name + " (" + time_zone + "):")
+            for current_date in agent_schedule[time_zone][agent_name]:
+                if len(agent_schedule[time_zone][agent_name][current_date]) == 0: #if there are no shifts for this day skip
+                    pass
+                else:
+                    print("  " + current_date + ": ", end="")
+                    for current_shift_set in agent_schedule[time_zone][agent_name][current_date]:
+                        if len(current_shift_set) == 1: # single hour shift
+                            print(current_shift_set[0], end=", ") 
+                        else: # multiple hour shift
+                            start_time = current_shift_set[0][:5]
+                            end_time = current_shift_set[-1][6:]
+                            print(start_time + "-" + end_time, end=", ") 
+                    print()
