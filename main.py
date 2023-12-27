@@ -1,6 +1,5 @@
 import gspread
 import pandas as pd 
-#import dtale 
 import re
 
 confidential =  open("confidential.txt", "r")
