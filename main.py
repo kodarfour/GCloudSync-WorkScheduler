@@ -1,6 +1,10 @@
 import gspread
 import pandas as pd 
 import re
+import datetime
+
+
+
 
 confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
@@ -179,11 +183,21 @@ for week_index in range(0, len(structured_df), 19):
 
 currentWeek_df = weeks[-1]
 
+today = datetime.date.today()
+month_now = str(today.month)
+year_now = today.year
+
 for agent_name, agent_info in agents.items(): # algorithim that groups shifts within each date
     time_zone = agent_info[0]
     for i in range(1, 8): 
         time_slots = list(currentWeek_df.iloc[1:, i]) 
-        current_date = list(currentWeek_df.iloc[:1, i])[0]
+        current_date_unformatted = list(currentWeek_df.iloc[:1, i])[0]
+        current_month = current_date_unformatted[:current_date_unformatted.index('/')]
+        if month_now == current_month:
+            current_date_unformatted += "/" + str(year_now)
+        elif month_now == "12" and current_month == "1":
+            current_date_unformatted += "/" + str(year_now + 1)
+        current_date = str(datetime.datetime.strptime(current_date_unformatted, "%m/%d/%Y").date())
         agent_schedule[time_zone][agent_name] = {**agent_schedule[time_zone][agent_name], current_date : list()}
         prev_slot_index = 100000000000000000
         shift_count = 0
