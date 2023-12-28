@@ -37,6 +37,41 @@ agent_schedule = {
     "America/St_Thomas": dict()         # Virgin Islands
 }
 
+
+for agent_name, agent_info in agents.items(): # populate agent_schedule with agent names
+    time_zone = agent_info[0]
+    agent_schedule[time_zone] = {**agent_schedule[time_zone], agent_name : dict()} 
+
+"""
+example agent_schedule dictionary structure ^^^
+{
+    Eastern : { 
+        agent1 : {
+            date1 : [shift period, shift period, team meeting period, shift period],
+            date2 : [shift period, shift period, team meeting period, shift period]
+            },
+        agent2 : {
+            date1 : [shift period, shift period, team meeting period, shift period],
+            date2 : [shift period, shift period, team meeting period, shift period]
+            }
+        }
+    },
+        
+
+    Pacific : { 
+        agent1 : {
+            date1 : [shift period, shift period, team meeting period, shift period],
+            date2 : [shift period, shift period, team meeting period, shift period]
+            },
+        agent2 : {
+            date1 : [shift period, shift period, team meeting period, shift period],
+            date2 : [shift period, shift period, team meeting period, shift period]
+            }
+        }
+    }
+}
+"""
+
 # What each time slot index corresponds to depending on time zone
 time_indexes = {
     'America/New_York': [
@@ -124,40 +159,6 @@ time_indexes = {
         "00:00-01:00", "01:00-02:00"
     ]
 }
-
-for agent_name, agent_info in agents.items():
-    time_zone = agent_info[0]
-    agent_schedule[time_zone] = {**agent_schedule[time_zone], agent_name : dict()} 
-
-"""
-agent_schedule dictionary structure ^^^
-{
-    Eastern : { 
-        agent1 : {
-            date1 : [shifts],
-            date2 : [shifts]
-            },
-        agent2 : {
-            date1 : [shifts],
-            date2 : [shifts]
-            }
-        }
-    },
-        
-
-    Pacific : { 
-        agent1 : {
-            date1 : [shifts],
-            date2 : [shifts]
-            },
-        agent2 : {
-            date1 : [shifts],
-            date2 : [shifts]
-            }
-        }
-    }
-}
-"""
 
 gc = gspread.service_account(filename="credentials.json")
 sh = gc.open_by_key(spreadsheetID)
