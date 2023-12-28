@@ -160,13 +160,33 @@ time_indexes = {
         "00:00-01:00", "01:00-02:00"
     ]
 }
+today = datetime.date.today()
+month_now = str(today.month)
+year_now = today.year
 
 gc = gspread.service_account(filename="credentials.json")
 sh = gc.open_by_key(spreadsheetID)
 
-worksheet = sh.worksheet("Dec 2023")
+spreadsheet_info = sh.worksheets()
+worksheet_titles = [sheet.title for sheet in spreadsheet_info]
 
-data = worksheet.get_all_values()
+regex_years = (year_now, year_now+1)
+regex_pattern = "^\w{3,8}\s%d|%d$" 
+# selects latest title under the parameters of character size 3-8 (smallest month name is 3 largest is 8) takin in account for abreviations
+# one single white space
+# either the current year or one year after
+# NOTE: MAKE SURE THAT LEAD IS AWARE OF NAMING CONVENTION/ENSURING TARGET SCHEDULING WORKSHEET IS BEFORE ALL OTHER SCHEDULE RELATED WORKSHEETS
+
+for title in worksheet_titles: 
+    formatted_regex_pattern = regex_pattern % regex_years
+    match = re.search(formatted_regex_pattern, title)
+    if match:
+        latest_title = match.group()
+        break
+
+latest_worksheet = sh.worksheet(latest_title)
+
+data = latest_worksheet.get_all_values()
 
 df = pd.DataFrame(data)
 
@@ -179,10 +199,6 @@ for week_index in range(0, len(structured_df), 19):
     weeks.append(thisWeek_df)
 
 currentWeek_df = weeks[-1]
-
-today = datetime.date.today()
-month_now = str(today.month)
-year_now = today.year
 
 for agent_name, agent_info in agents.items(): # algorithim that groups shifts within each date
     time_zone = agent_info[0]
