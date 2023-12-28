@@ -6,6 +6,7 @@ confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
 breck_email = confidential.readline().strip()
 garrick_email = confidential.readline().strip()
+devin_email = confidential.readline().strip()
 confidential.close()
 
 agents = {
@@ -16,7 +17,7 @@ agents = {
     "Breck" : ["America/Los_Angeles", breck_email],
     "Garrick" : ["America/Los_Angeles",  garrick_email],
     "Elijah" : ["America/Los_Angeles",  "email"],
-    "Devin" : ["America/New_York",  "email"],
+    "Devin" : ["America/New_York",  devin_email],
     "Wesley" : ["America/Los_Angeles",  "email"],
     "Jay" : ["America/Los_Angeles", "email"] ,
 }
