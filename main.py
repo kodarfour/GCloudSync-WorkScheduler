@@ -3,9 +3,6 @@ import pandas as pd
 import re
 import datetime
 
-
-
-
 confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
 breck_email = confidential.readline().strip()
@@ -253,23 +250,34 @@ for agent_name, agent_info in agents.items(): # algorithim that groups shifts wi
                     agent_schedule[time_zone][agent_name][current_date][shift_count].append(time_indexes[time_zone][slot_index] + " (TM)")
                     if slot_index - prev_slot_index < 0: 
                         shift_count += 1
-       
+
+utc_offset = ":00-00:00" # set to unknown by default and includes [:00]-00:00 so seconds are included
 for time_zone in agent_schedule:
     if len(list(agent_schedule[time_zone].keys())) == 0: #if there are no agents in current time_zone skip
         pass
     else:
         for agent_name in agent_schedule[time_zone]:
-            print(agent_name + " (" + time_zone + "):")
+            print(agent_name + " (" + time_zone + "):\n")
             for current_date in agent_schedule[time_zone][agent_name]:
                 if len(agent_schedule[time_zone][agent_name][current_date]) == 0: #if there are no shifts for this day skip
                     pass
                 else:
-                    print("  " + current_date + ": ", end="")
+                    print("  " + current_date + ": ")
                     for current_shift_set in agent_schedule[time_zone][agent_name][current_date]:
                         if len(current_shift_set) == 1: # single hour shift
-                            print(current_shift_set[0], end=", ") 
+                            start_time = current_date + "T" + current_shift_set[0][:5] + utc_offset
+                            end_time = current_date + "T" + current_shift_set[0][6:11] + utc_offset
+                            if "(TM)" in current_shift_set[0]:
+                                print("    TEAM MEETING:")
+                                print("      " + start_time)
+                                print("      " + end_time + "\n")
+                            else: 
+                                print("    SHIFT:")
+                                print("      " + start_time)
+                                print("      " + end_time + "\n")
                         else: # multiple hour shift
-                            start_time = current_shift_set[0][:5]
-                            end_time = current_shift_set[-1][6:]
-                            print(start_time + "-" + end_time, end=", ") 
-                    print()
+                            start_time = current_date + "T" + current_shift_set[0][:5] + utc_offset
+                            end_time = current_date + "T" + current_shift_set[-1][6:] + utc_offset
+                            print("    SHIFT:")
+                            print("      " + start_time)
+                            print("      " + end_time + "\n")
