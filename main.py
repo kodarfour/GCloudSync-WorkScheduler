@@ -209,7 +209,7 @@ for agent_name, agent_info in agents.items(): # algorithim that groups shifts wi
         time_slots = list(currentWeek_df.iloc[1:, i]) 
         current_date_unformatted = list(currentWeek_df.iloc[:1, i])[0]
         current_month = current_date_unformatted[:current_date_unformatted.index('/')]
-        if month_now == current_month or month_now == str(int(current_month)+1):
+        if month_now == current_month or str(int(month_now)) == current_month:
             current_date_unformatted += "/" + str(year_now)
         elif month_now == "12" and current_month == "1":
             current_date_unformatted += "/" + str(year_now + 1)
