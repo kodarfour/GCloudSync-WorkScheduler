@@ -172,9 +172,10 @@ worksheet_titles = [sheet.title for sheet in spreadsheet_info]
 
 regex_years = (year_now, year_now+1)
 regex_pattern = "^\w{3,8}\s%d|%d$" 
-# selects latest title under the parameters of character size 3-8 (smallest month name is 3 largest is 8) takin in account for abreviations
-# one single white space
-# either the current year or one year after
+# selects latest title under the parameters of:
+# 1. character size 3-8 (smallest month name is 3 largest is 8) takin in account for abreviations
+# 2. one single white space
+# 3. either the current year or one year after
 # NOTE: MAKE SURE THAT LEAD IS AWARE OF NAMING CONVENTION/ENSURING TARGET SCHEDULING WORKSHEET IS BEFORE ALL OTHER SCHEDULE RELATED WORKSHEETS
 
 for title in worksheet_titles: 
