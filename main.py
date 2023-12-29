@@ -48,12 +48,12 @@ example agent_schedule dictionary structure ^^^
 {
     Eastern : { 
         agent1 : {
-            date1 : [shift period, shift period, team meeting period, shift period],
-            date2 : [shift period, shift period, team meeting period, shift period]
+            date1 : [shift set, shift set, team meeting period, shift set],
+            date2 : [shift set, shift set, team meeting period, shift set]
             },
         agent2 : {
-            date1 : [shift period, shift period, team meeting period, shift period],
-            date2 : [shift period, shift period, team meeting period, shift period]
+            date1 : [shift set, shift set, team meeting period, shift set],
+            date2 : [shift set, shift set, team meeting period, shift set]
             }
         }
     },
@@ -61,12 +61,12 @@ example agent_schedule dictionary structure ^^^
 
     Pacific : { 
         agent1 : {
-            date1 : [shift period, shift period, team meeting period, shift period],
-            date2 : [shift period, shift period, team meeting period, shift period]
+            date1 : [shift set, shift set, team meeting period, shift set],
+            date2 : [shift set, shift set, team meeting period, shift set]
             },
         agent2 : {
-            date1 : [shift period, shift period, team meeting period, shift period],
-            date2 : [shift period, shift period, team meeting period, shift period]
+            date1 : [shift set, shift set, team meeting period, shift set],
+            date2 : [shift set, shift set, team meeting period, shift set]
             }
         }
     }
@@ -181,7 +181,7 @@ for title in worksheet_titles:
     formatted_regex_pattern = regex_pattern % regex_years
     match = re.search(formatted_regex_pattern, title)
     if match:
-        latest_title = match.group()
+        latest_title = title
         break
 
 latest_worksheet = sh.worksheet(latest_title)
@@ -190,13 +190,15 @@ data = latest_worksheet.get_all_values()
 
 df = pd.DataFrame(data)
 
-structured_df = df.drop(columns=[9, 10, 11, 12, 13, 14]) #minimizes to only needed columns in spreadsheet
+structured_df = df[[0, 1, 2, 3, 4, 5,6,7,8]] #minimizes to only needed columns in spreadsheet
 
 weeks = list()
 
 for week_index in range(0, len(structured_df), 19):
     thisWeek_df = structured_df.iloc[week_index:week_index+19, :]
-    weeks.append(thisWeek_df)
+    not_empty = 'Team meeting' in thisWeek_df.to_string()
+    if not_empty:
+        weeks.append(thisWeek_df)
 
 currentWeek_df = weeks[-1]
 
