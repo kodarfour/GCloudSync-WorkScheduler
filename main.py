@@ -2,12 +2,19 @@ import gspread
 import pandas as pd 
 import re
 import datetime
+from oauth2client.service_account import ServiceAccountCredentials
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
 
 confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
 breck_email = confidential.readline().strip()
 garrick_email = confidential.readline().strip()
 devin_email = confidential.readline().strip()
+shift_description = confidential.readline().strip()
+tm_description = confidential.readline().strip()
+wesley_email = confidential.readline().strip()
 confidential.close()
 
 agents = {
@@ -19,7 +26,7 @@ agents = {
     "Garrick" : ["America/Los_Angeles",  garrick_email],
     "Elijah" : ["America/Los_Angeles",  "email"],
     "Devin" : ["America/New_York",  devin_email],
-    "Wesley" : ["America/Los_Angeles",  "email"],
+    "Wesley" : ["America/Los_Angeles",  wesley_email],
     "Jay" : ["America/Los_Angeles", "email"] ,
 }
 
@@ -164,6 +171,19 @@ today = datetime.date.today()
 month_now = str(today.month)
 year_now = today.year
 
+SCOPES = ['https://www.googleapis.com/auth/calendar']
+
+creds = None
+
+try:
+    creds = Credentials.from_authorized_user_file('token.json', SCOPES)
+except Exception as e:
+    flow = InstalledAppFlow.from_client_secrets_file('calendar_credentials.json', SCOPES)
+    creds = flow.run_local_server(port=0)
+
+
+service = build('calendar', 'v3', credentials=creds)
+
 gc = gspread.service_account(filename="credentials.json")
 sh = gc.open_by_key(spreadsheetID)
 
@@ -270,33 +290,122 @@ for agent_name, agent_info in agents.items(): # algorithim that groups shifts wi
                     if slot_index - prev_slot_index < 0: 
                         shift_count += 1
 
-utc_offset = ":00-00:00" # set to unknown by default and includes [:00]-00:00 so seconds are included
+
 for time_zone in agent_schedule:
     if len(list(agent_schedule[time_zone].keys())) == 0: #if there are no agents in current time_zone skip
         pass
     else:
         for agent_name in agent_schedule[time_zone]:
-            print(agent_name + " (" + time_zone + "):\n")
-            for current_date in agent_schedule[time_zone][agent_name]:
-                if len(agent_schedule[time_zone][agent_name][current_date]) == 0: #if there are no shifts for this day skip
-                    pass
-                else:
-                    print("  " + current_date + ": ")
-                    for current_shift_set in agent_schedule[time_zone][agent_name][current_date]:
-                        if len(current_shift_set) == 1: # single hour shift
-                            start_time = current_date + "T" + current_shift_set[0][:5] + utc_offset
-                            end_time = current_date + "T" + current_shift_set[0][6:11] + utc_offset
-                            if "(TM)" in current_shift_set[0]:
-                                print("    TEAM MEETING:")
-                                print("      " + start_time)
-                                print("      " + end_time + "\n")
-                            else: 
-                                print("    SHIFT:")
-                                print("      " + start_time)
-                                print("      " + end_time + "\n")
-                        else: # multiple hour shift
-                            start_time = current_date + "T" + current_shift_set[0][:5] + utc_offset
-                            end_time = current_date + "T" + current_shift_set[-1][6:] + utc_offset
-                            print("    SHIFT:")
-                            print("      " + start_time)
-                            print("      " + end_time + "\n")
+            if agents[agent_name][-1] == "email":
+                pass
+            else:
+                agent_emal = agents[agent_name][-1]
+                for current_date in agent_schedule[time_zone][agent_name]:
+                    if len(agent_schedule[time_zone][agent_name][current_date]) == 0: #if there are no shifts for this day skip
+                        pass
+                    elif len(agent_schedule[time_zone][agent_name][current_date]) > 0:
+                        for current_shift_set in agent_schedule[time_zone][agent_name][current_date]:
+                            if len(current_shift_set) == 1: # single hour shift
+                                start_time = current_date + "T" + current_shift_set[0][:5] + ":00"
+                                end_time = current_date + "T" + current_shift_set[0][6:11] + ":00"
+                                if "(TM)" in current_shift_set[0]:
+                                    team_meeting = {
+                                        'summary': '',
+                                        'location': 'Zoom',
+                                        'description': tm_description,
+                                        'start': {
+                                            'dateTime': '',
+                                            'timeZone': '',
+                                        },
+                                        'end': {
+                                            'dateTime': '',
+                                            'timeZone': '',
+                                        },
+                                        'attendees': [],
+                                        'reminders': {
+                                            'useDefault': False,
+                                            'overrides': [
+                                            {'method': 'email', 'minutes': 15},
+                                            {'method': 'popup', 'minutes': 5},
+                                            ],
+                                        },
+                                    }
+                                    team_meeting['summary'] = 'Team Meeting: ' + current_date
+                                    team_meeting['start']['dateTime'] = start_time
+                                    team_meeting['start']['timeZone'] = time_zone
+                                    team_meeting['end']['dateTime'] = end_time
+                                    team_meeting['end']['timeZone'] = time_zone
+                                    attendee = dict()
+                                    attendee['email'] = agent_emal
+                                    team_meeting['attendees'].append(attendee)
+                                    created_event = service.events().insert(calendarId='primary', body=team_meeting).execute()
+                                    print("Team Meeting Event created for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[0][6:11] + ": ", end = '')
+                                    print(f" {created_event.get('htmlLink')}")
+                                else: 
+                                    regular_shift = {
+                                        'summary': '',
+                                        'location': 'Zendesk',
+                                        'description': shift_description,
+                                        'start': {
+                                            'dateTime': '',
+                                            'timeZone': '',
+                                        },
+                                        'end': {
+                                            'dateTime': '',
+                                            'timeZone': '',
+                                        },
+                                        'attendees': [],
+                                        'reminders': {
+                                            'useDefault': False,
+                                            'overrides': [
+                                            {'method': 'email', 'minutes': 15},
+                                            {'method': 'popup', 'minutes': 10},
+                                            ],
+                                        },
+                                    }
+                                    regular_shift['summary'] = 'Shift: ' + current_date
+                                    regular_shift['start']['dateTime'] = start_time
+                                    regular_shift['start']['timeZone'] = time_zone
+                                    regular_shift['end']['dateTime'] = end_time
+                                    regular_shift['end']['timeZone'] = time_zone
+                                    attendee = dict()
+                                    attendee['email'] = agent_emal
+                                    regular_shift['attendees'].append(attendee)
+                                    created_event = service.events().insert(calendarId='primary', body=regular_shift).execute()
+                                    print("Regular Shift Event created for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[0][6:11] + ": ", end = '')
+                                    print(f" {created_event.get('htmlLink')}")
+                            else: # multiple hour shift
+                                start_time = current_date + "T" + current_shift_set[0][:5] + ":00"
+                                end_time = current_date + "T" + current_shift_set[-1][6:] + ":00"
+                                regular_shift = {
+                                    'summary': '',
+                                    'location': 'Zendesk',
+                                    'description': shift_description,
+                                    'start': {
+                                        'dateTime': '',
+                                        'timeZone': '',
+                                    },
+                                    'end': {
+                                        'dateTime': '',
+                                        'timeZone': '',
+                                    },
+                                    'attendees': [],
+                                    'reminders': {
+                                        'useDefault': False,
+                                        'overrides': [
+                                        {'method': 'email', 'minutes': 15},
+                                        {'method': 'popup', 'minutes': 10},
+                                        ],
+                                    },
+                                }
+                                regular_shift['summary'] = 'Shift: ' + current_date
+                                regular_shift['start']['dateTime'] = start_time
+                                regular_shift['start']['timeZone'] = time_zone
+                                regular_shift['end']['dateTime'] = end_time
+                                regular_shift['end']['timeZone'] = time_zone
+                                attendee = dict()
+                                attendee['email'] = agent_emal
+                                regular_shift['attendees'].append(attendee)
+                                created_event = service.events().insert(calendarId='primary', body=regular_shift).execute()
+                                print("Regular Shift Event created for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[-1][6:] + ": ", end = '')
+                                print(f" {created_event.get('htmlLink')}")
