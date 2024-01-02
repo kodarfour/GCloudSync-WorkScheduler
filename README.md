@@ -25,10 +25,10 @@ The completion of this project will result in an efficient, cloud-based system t
 
 ## Example
 
-**Sample Google Sheets Schedule:**
+**Sample Google Sheets Schedule (Week 01/01/2024 - 01/07/2024):**
 
 ![sample google sheets schedule image](https://github.com/kodarfour/GCloudSync-WorkScheduler/blob/kofi-testing/images/example_schedule.png?raw=true)
 
-**Calendar Result:**
+**Calendar Result (Agent: Kofi | Time Zone: Eastern):**
 
 ![calendar result image](https://github.com/kodarfour/GCloudSync-WorkScheduler/blob/kofi-testing/images/result.jpg?raw=true)
