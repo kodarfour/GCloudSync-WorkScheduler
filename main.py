@@ -207,7 +207,7 @@ for title in worksheet_titles:
 latest_worksheet = sh.worksheet(latest_title)
 data = latest_worksheet.get_all_values()
 df = pd.DataFrame(data)
-structured_df = df[[0, 1, 2, 3, 4, 5,6,7,8]] #minimizes to only needed columns in spreadsheet
+structured_df = df[[0, 1, 2, 3, 4, 5,6,7,8]] # minimizes to only needed columns in spreadsheet
 weeks = list()
 
 for week_index in range(0, len(structured_df), 19):
