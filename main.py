@@ -6,7 +6,6 @@ from datetime import timedelta
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
-import subprocess
 
 confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
@@ -23,10 +22,10 @@ agents = {
     #"agent name" : ["time/zone", "email@address.com"], NOTE (if "email@address.com" is set to "email", it will skip the agent.)
     "Zo" : ["America/New_York", "zohaibk1204@gmail.com"], 
     "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
-    "Breck" : ["America/Los_Angeles", breck_email],  
+    "Breck" : ["America/Los_Angeles", breck_email], 
     "Garrick" : ["America/Los_Angeles", garrick_email ], 
     "Elijah" : ["America/Los_Angeles",  "email"],
-    "Devin" : ["America/New_York", devin_email ], 
+    "Devin" : ["America/New_York",  devin_email],  
     "Wesley" : ["America/Los_Angeles", wesley_email ], 
     "Jay" : ["America/Los_Angeles", "email"] ,
 }
