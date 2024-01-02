@@ -1,4 +1,4 @@
-# ZyShift, an Automated Shift Scheduling and Reminding Internal Tool for the ZyBooks Support Team
+# ZyShift, an Automated Shift Scheduling / Reminding Internal Tool for the ZyBooks Support Team
 
 ## Project Description
 This project is designed to automate the process of synchronizing work hours (accross all US time zones) from a Google Sheets document to Google Calendar and providing timely reminders before shifts. Utilizing the Google Cloud Platform (GCP) services, it comprises two primary components:
