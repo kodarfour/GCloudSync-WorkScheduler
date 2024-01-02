@@ -22,3 +22,12 @@ This project is designed to automate the process of synchronizing work hours fro
 
 ## Outcome
 The completion of this project will result in an efficient, cloud-based system that effectively integrates Google Sheets with Google Calendar. It showcases the practical application of cloud computing services in automating and simplifying routine productivity tasks.
+
+## Example:
+
+**Sample Google Sheets Schedule:**
+
+[sample google sheets schedule image](https://github.com/kodarfour/GCloudSync-WorkScheduler/blob/kofi-testing/images/example_schedule.png?raw=true)
+
+**Calendar Result:**
+[calendar result image](https://github.com/kodarfour/GCloudSync-WorkScheduler/blob/kofi-testing/images/results.jpg?raw=true)
