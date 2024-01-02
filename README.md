@@ -30,4 +30,4 @@ The completion of this project will result in an efficient, cloud-based system t
 ![sample google sheets schedule image](https://github.com/kodarfour/GCloudSync-WorkScheduler/blob/kofi-testing/images/example_schedule.png?raw=true)
 
 **Calendar Result:**
-![calendar result image](https://github.com/kodarfour/GCloudSync-WorkScheduler/blob/kofi-testing/images/results.jpg?raw=true)
+![calendar result image](https://github.com/kodarfour/GCloudSync-WorkScheduler/blob/kofi-testing/images/result.jpg?raw=true)
