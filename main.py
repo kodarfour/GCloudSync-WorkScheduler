@@ -47,7 +47,6 @@ agent_schedule = {
     "America/St_Thomas": dict()         # Virgin Islands
 }
 
-
 for agent_name, agent_info in agents.items(): # populate agent_schedule with agent names
     time_zone = agent_info[0]
     agent_schedule[time_zone] = {**agent_schedule[time_zone], agent_name : dict()} 
@@ -169,12 +168,11 @@ time_indexes = {
         "00:00-01:00", "01:00-02:00"
     ]
 }
+
 today = datetime.date.today()
 month_now = str(today.month)
 year_now = today.year
-
 SCOPES = ['https://www.googleapis.com/auth/calendar']
-
 creds = None
 
 try:
@@ -182,8 +180,6 @@ try:
 except Exception as e:
     flow = InstalledAppFlow.from_client_secrets_file('calendar_credentials.json', SCOPES)
     creds = flow.run_local_server(port=0)
-
-
 
 service = build('calendar', 'v3', credentials=creds)
 
@@ -209,13 +205,9 @@ for title in worksheet_titles:
         break
 
 latest_worksheet = sh.worksheet(latest_title)
-
 data = latest_worksheet.get_all_values()
-
 df = pd.DataFrame(data)
-
 structured_df = df[[0, 1, 2, 3, 4, 5,6,7,8]] #minimizes to only needed columns in spreadsheet
-
 weeks = list()
 
 for week_index in range(0, len(structured_df), 19):
@@ -294,7 +286,6 @@ for agent_name, agent_info in agents.items(): # algorithim that groups shifts wi
                     agent_schedule[time_zone][agent_name][current_date][shift_count].append(time_indexes[time_zone][slot_index] + " (TM)")
                     if slot_index - prev_slot_index < 0: 
                         shift_count += 1
-
 
 for time_zone in agent_schedule:
     if len(list(agent_schedule[time_zone].keys())) == 0: #if there are no agents in current time_zone skip
