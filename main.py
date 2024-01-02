@@ -18,8 +18,8 @@ wesley_email = confidential.readline().strip()
 confidential.close()
 
 agents = { 
-    #example:
-    #"agent name" : ["time/zone", "email@address.com"], NOTE (if "email@address.com" is set to "email", it will skip the agent.)
+    # example:
+    # "agent name" : ["time/zone", "email@address.com"], NOTE (if "email@address.com" is set to "email", it will skip the agent.)
     "Zo" : ["America/New_York", "zohaibk1204@gmail.com"], 
     "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
     "Breck" : ["America/Los_Angeles", breck_email], 
@@ -218,7 +218,7 @@ for week_index in range(0, len(structured_df), 19):
 
 currentWeek_df = weeks[-1]
 
-for agent_name, agent_info in agents.items(): # algorithim that groups shifts within each date
+for agent_name, agent_info in agents.items(): # algorithm that groups shifts within each date
     time_zone = agent_info[0]
     for i in range(1, 8): 
         time_slots = list(currentWeek_df.iloc[1:, i]) 
@@ -277,7 +277,7 @@ for agent_name, agent_info in agents.items(): # algorithim that groups shifts wi
                     first_hour = time_indexes[time_zone][slot_index][:2] 
                     second_hour = time_indexes[time_zone][slot_index][6:8]
                     agent_schedule[time_zone][agent_name][current_date][shift_count].append(first_hour + custom_minutes + "-" + second_hour + custom_minutes + " (TM)")
-                    if slot_index - prev_slot_index < 0: #if team meeting period is first in shift set
+                    if slot_index - prev_slot_index < 0: # if team meeting period is first in shift set
                         shift_count += 1                        
                 else: # if custom minutes isn't found for team meeting period
                     if slot_index - prev_slot_index > 0:
@@ -288,7 +288,7 @@ for agent_name, agent_info in agents.items(): # algorithim that groups shifts wi
                         shift_count += 1
 
 for time_zone in agent_schedule:
-    if len(list(agent_schedule[time_zone].keys())) == 0: #if there are no agents in current time_zone skip
+    if len(list(agent_schedule[time_zone].keys())) == 0: # if there are no agents in current time_zone skip
         pass
     else:
         for agent_name in agent_schedule[time_zone]:
