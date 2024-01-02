@@ -23,7 +23,7 @@ This project is designed to automate the process of synchronizing work hours fro
 ## Outcome
 The completion of this project will result in an efficient, cloud-based system that effectively integrates Google Sheets with Google Calendar. It showcases the practical application of cloud computing services in automating and simplifying routine productivity tasks.
 
-## Example:
+## Example
 
 **Sample Google Sheets Schedule:**
 
