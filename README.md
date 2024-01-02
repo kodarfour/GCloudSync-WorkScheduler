@@ -1,7 +1,7 @@
 # ZyShift, an Automated Shift Scheduling and Reminding Internal Tool for the ZyBooks Support Team
 
 ## Project Description
-This project is designed to automate the process of synchronizing work hours from a Google Sheets (accross all US time zones) document to Google Calendar and providing timely reminders before shifts. Utilizing the Google Cloud Platform (GCP) services, it comprises two primary components:
+This project is designed to automate the process of synchronizing work hours (accross all US time zones) from a Google Sheets document to Google Calendar and providing timely reminders before shifts. Utilizing the Google Cloud Platform (GCP) services, it comprises two primary components:
 
 ### 1. Schedule Synchronization
 - **Functionality**: A script or application will read work hour entries from a Google Sheets document and subsequently create or update events in the user's Google Calendar to reflect the work schedule accurately.
@@ -19,6 +19,9 @@ This project is designed to automate the process of synchronizing work hours fro
 - **Google Cloud Platform (GCP)**: Utilizes various GCP services, including App Engine, Cloud Functions, Cloud Scheduler, Google Cloud Storage, and Pub/Sub
 - **Programming Language**: Python for backend development.
 - **Google APIs**: Integration with Google Sheets and Calendar for data handling.
+- **Pandas (Python Package)**: Interaction with Spreadsheet Cells and Reading their Values.
+- **Regular Expression (Python Library)**: Filtered Agent Names to Properly Set Shift Times.
+- **Datetime (Python Library)**: Streamlined RFC3339 Formatting Process for Calendar API Use.
 
 ## Outcome
 The completion of this project will result in an efficient, cloud-based system that effectively integrates Google Sheets with Google Calendar. It showcases the practical application of cloud computing services in automating and simplifying routine productivity tasks.
