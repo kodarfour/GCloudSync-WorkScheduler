@@ -2,7 +2,7 @@ import gspread
 import pandas as pd 
 import re
 import datetime
-from oauth2client.service_account import ServiceAccountCredentials
+from datetime import timedelta
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
@@ -376,7 +376,16 @@ for time_zone in agent_schedule:
                                     print(f" {created_event.get('htmlLink')}")
                             else: # multiple hour shift
                                 start_time = current_date + "T" + current_shift_set[0][:5] + ":00"
-                                end_time = current_date + "T" + current_shift_set[-1][6:] + ":00"
+                                starting_hours = int(current_shift_set[0][:2])
+                                ending_hours = int(current_shift_set[-1][6:8])
+                                if starting_hours < ending_hours:
+                                    end_time = current_date + "T" + current_shift_set[-1][6:] + ":00"
+                                elif starting_hours > ending_hours:
+                                    old_date = current_date
+                                    old_date_obj = datetime.datetime.strptime(old_date, "%Y-%m-%d").date()
+                                    next_day = old_date_obj + timedelta(days=1)
+                                    new_current_date = str(next_day)
+                                    end_time = new_current_date + "T" + current_shift_set[-1][6:] + ":00"
                                 regular_shift = {
                                     'summary': '',
                                     'location': 'Zendesk',
