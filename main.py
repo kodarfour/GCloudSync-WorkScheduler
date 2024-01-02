@@ -6,6 +6,7 @@ from datetime import timedelta
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
+import subprocess
 
 confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
@@ -17,18 +18,20 @@ tm_description = confidential.readline().strip()
 wesley_email = confidential.readline().strip()
 confidential.close()
 
-agents = {
+agents = { 
     #example:
-    #"agent name" : ["time/zone", "email@address.com"],
-    "Zo" : ["America/New_York", "zohaibk1204@gmail.com"],
+    #"agent name" : ["time/zone", "email@address.com"], NOTE (if "email@address.com" is set to "email", it will skip the agent.)
+    "Zo" : ["America/New_York", "zohaibk1204@gmail.com"], 
     "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
-    "Breck" : ["America/Los_Angeles", breck_email],
-    "Garrick" : ["America/Los_Angeles",  garrick_email],
+    "Breck" : ["America/Los_Angeles", breck_email],  
+    "Garrick" : ["America/Los_Angeles", garrick_email ], 
     "Elijah" : ["America/Los_Angeles",  "email"],
-    "Devin" : ["America/New_York",  devin_email],
-    "Wesley" : ["America/Los_Angeles",  wesley_email],
+    "Devin" : ["America/New_York", devin_email ], 
+    "Wesley" : ["America/Los_Angeles", wesley_email ], 
     "Jay" : ["America/Los_Angeles", "email"] ,
 }
+
+tm_whitelist = ["Zo", "Kofi"] # agents who want team meetings pushed to personal emails
 
 agent_schedule = {
     "America/New_York": dict(),         # Eastern Time
@@ -182,6 +185,7 @@ except Exception as e:
     creds = flow.run_local_server(port=0)
 
 
+
 service = build('calendar', 'v3', credentials=creds)
 
 gc = gspread.service_account(filename="credentials.json")
@@ -233,6 +237,8 @@ for agent_name, agent_info in agents.items(): # algorithim that groups shifts wi
             current_date_unformatted += "/" + str(year_now)
         elif month_now == "12" and current_month == "1":
             current_date_unformatted += "/" + str(year_now + 1)
+        elif month_now == "1" and current_month == "12":
+            current_date_unformatted += "/" + str(year_now - 1)
         current_date = str(datetime.datetime.strptime(current_date_unformatted, "%m/%d/%Y").date())
         agent_schedule[time_zone][agent_name] = {**agent_schedule[time_zone][agent_name], current_date : list()}
         prev_slot_index = 100000000000000000
@@ -301,15 +307,15 @@ for time_zone in agent_schedule:
             else:
                 agent_emal = agents[agent_name][-1]
                 for current_date in agent_schedule[time_zone][agent_name]:
-                    if len(agent_schedule[time_zone][agent_name][current_date]) == 0: #if there are no shifts for this day skip
+                    if len(agent_schedule[time_zone][agent_name][current_date]) == 0: # if there are no shifts for this day skip
                         pass
                     elif len(agent_schedule[time_zone][agent_name][current_date]) > 0:
                         for current_shift_set in agent_schedule[time_zone][agent_name][current_date]:
                             if len(current_shift_set) == 1: # single hour shift
-                                start_time = current_date + "T" + current_shift_set[0][:5] + ":00"
+                                start_time = current_date + "T" + current_shift_set[0][:5] + ":00" 
                                 end_time = current_date + "T" + current_shift_set[0][6:11] + ":00"
-                                if "(TM)" in current_shift_set[0]:
-                                    team_meeting = {
+                                if "(TM)" in current_shift_set[0] and agent_name in tm_whitelist:
+                                    team_meeting = { # reset values
                                         'summary': '',
                                         'location': 'Zoom',
                                         'description': tm_description,
@@ -341,8 +347,8 @@ for time_zone in agent_schedule:
                                     created_event = service.events().insert(calendarId='primary', body=team_meeting).execute()
                                     print("Team Meeting Event created for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[0][6:11] + ": ", end = '')
                                     print(f" {created_event.get('htmlLink')}")
-                                else: 
-                                    regular_shift = {
+                                elif "(TM)" not in current_shift_set[0]: 
+                                    regular_shift = { # reset values
                                         'summary': '',
                                         'location': 'Zendesk',
                                         'description': shift_description,
@@ -359,7 +365,7 @@ for time_zone in agent_schedule:
                                             'useDefault': False,
                                             'overrides': [
                                             {'method': 'email', 'minutes': 15},
-                                            {'method': 'popup', 'minutes': 10},
+                                            {'method': 'popup', 'minutes': 5},
                                             ],
                                         },
                                     }
@@ -376,9 +382,9 @@ for time_zone in agent_schedule:
                                     print(f" {created_event.get('htmlLink')}")
                             else: # multiple hour shift
                                 start_time = current_date + "T" + current_shift_set[0][:5] + ":00"
-                                starting_hours = int(current_shift_set[0][:2])
-                                ending_hours = int(current_shift_set[-1][6:8])
-                                if starting_hours < ending_hours:
+                                starting_hours = int(current_shift_set[0][:2]) # the "hh" part of the "hh:mm:ss" time format for start time
+                                ending_hours = int(current_shift_set[-1][6:8]) # the "hh" part of the "hh:mm:ss" time format for end time
+                                if starting_hours < ending_hours: 
                                     end_time = current_date + "T" + current_shift_set[-1][6:] + ":00"
                                 elif starting_hours > ending_hours:
                                     old_date = current_date
@@ -386,7 +392,7 @@ for time_zone in agent_schedule:
                                     next_day = old_date_obj + timedelta(days=1)
                                     new_current_date = str(next_day)
                                     end_time = new_current_date + "T" + current_shift_set[-1][6:] + ":00"
-                                regular_shift = {
+                                regular_shift = { # reset values
                                     'summary': '',
                                     'location': 'Zendesk',
                                     'description': shift_description,
@@ -403,7 +409,7 @@ for time_zone in agent_schedule:
                                         'useDefault': False,
                                         'overrides': [
                                         {'method': 'email', 'minutes': 15},
-                                        {'method': 'popup', 'minutes': 10},
+                                        {'method': 'popup', 'minutes': 5},
                                         ],
                                     },
                                 }
