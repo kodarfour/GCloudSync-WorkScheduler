@@ -181,10 +181,18 @@ except Exception as e:
     flow = InstalledAppFlow.from_client_secrets_file('calendar_credentials.json', SCOPES)
     creds = flow.run_local_server(port=0)
 
-service = build('calendar', 'v3', credentials=creds)
+try:
+    service = build('calendar', 'v3', credentials=creds)
+except:
+    print("Error: Failed to build Calendar service")
+    exit()
 
-gc = gspread.service_account(filename="credentials.json")
-sh = gc.open_by_key(spreadsheetID)
+try:
+    gc = gspread.service_account(filename="credentials.json")
+    sh = gc.open_by_key(spreadsheetID)
+except:
+    print("Error: Failed to open Sheet")
+    exit()
 
 spreadsheet_info = sh.worksheets()
 worksheet_titles = [sheet.title for sheet in spreadsheet_info]
@@ -334,9 +342,13 @@ for time_zone in agent_schedule:
                                     attendee = dict()
                                     attendee['email'] = agent_emal
                                     team_meeting['attendees'].append(attendee)
-                                    created_event = service.events().insert(calendarId='primary', body=team_meeting).execute()
-                                    print("Team Meeting Event created for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[0][6:11] + ": ", end = '')
-                                    print(f" {created_event.get('htmlLink')}")
+                                    try:
+                                        created_event = service.events().insert(calendarId='primary', body=team_meeting).execute()
+                                        print("Team Meeting Event created for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[0][6:11] + ": ", end = '')
+                                        print(f" {created_event.get('htmlLink')}")
+                                        print()
+                                    except:
+                                        print("ERROR: Failed to create Team Meeting Event for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[0][6:11])
                                 elif "(TM)" not in current_shift_set[0]: 
                                     regular_shift = { # reset values
                                         'summary': '',
@@ -367,9 +379,13 @@ for time_zone in agent_schedule:
                                     attendee = dict()
                                     attendee['email'] = agent_emal
                                     regular_shift['attendees'].append(attendee)
-                                    created_event = service.events().insert(calendarId='primary', body=regular_shift).execute()
-                                    print("Regular Shift Event created for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[0][6:11] + ": ", end = '')
-                                    print(f" {created_event.get('htmlLink')}")
+                                    try:
+                                        created_event = service.events().insert(calendarId='primary', body=regular_shift).execute()
+                                        print("Regular Shift Event created for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[0][6:11] + ": ", end = '')
+                                        print(f" {created_event.get('htmlLink')}")
+                                        print()
+                                    except:
+                                        print("ERROR: Failed to create Regular Shift Event for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[0][6:11])
                             else: # multiple hour shift
                                 start_time = current_date + "T" + current_shift_set[0][:5] + ":00"
                                 starting_hours = int(current_shift_set[0][:2]) # the "hh" part of the "hh:mm:ss" time format for start time
@@ -411,6 +427,10 @@ for time_zone in agent_schedule:
                                 attendee = dict()
                                 attendee['email'] = agent_emal
                                 regular_shift['attendees'].append(attendee)
-                                created_event = service.events().insert(calendarId='primary', body=regular_shift).execute()
-                                print("Regular Shift Event created for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[-1][6:] + ": ", end = '')
-                                print(f" {created_event.get('htmlLink')}")
+                                try:
+                                    created_event = service.events().insert(calendarId='primary', body=regular_shift).execute()
+                                    print("Regular Shift Event created for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[-1][6:] + ": ", end = '')
+                                    print(f" {created_event.get('htmlLink')}")
+                                    print()
+                                except:
+                                        print("ERROR: Failed to create Team Meeting Event for " +  agent_name + " on " + current_date + " from " + current_shift_set[0][:5] + " - " + current_shift_set[0][6:11])
