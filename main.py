@@ -23,10 +23,10 @@ agents = {
     "Zo" : ["America/New_York", "zohaibk1204@gmail.com"], 
     "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
     "Breck" : ["America/Los_Angeles", breck_email], 
-    "Garrick" : ["America/Los_Angeles", garrick_email ], 
+    "Garrick" : ["America/Los_Angeles", garrick_email], 
     "Elijah" : ["America/Los_Angeles",  "email"],
     "Devin" : ["America/New_York",  devin_email],  
-    "Wesley" : ["America/Los_Angeles", wesley_email ], 
+    "Wesley" : ["America/Los_Angeles", wesley_email], 
     "Jay" : ["America/Los_Angeles", "email"] ,
 }
 
