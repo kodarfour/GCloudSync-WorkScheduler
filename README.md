@@ -16,6 +16,8 @@ This project is designed to automate the process of synchronizing work hours (ac
 - **User Convenience**: Offers a streamlined solution for managing work schedules, enhancing user productivity.
 
 ## Technologies Used
+To install all required Python packages, run:  
+> pip install -r requirements.txt
 - **Google Cloud Platform (GCP)**: Utilizes various GCP services, including App Engine, Cloud Functions, Cloud Scheduler, Google Cloud Storage, and Pub/Sub
 - **Programming Language**: Python for backend development.
 - **Google APIs**: Integration with Google Sheets and Calendar for data handling.
