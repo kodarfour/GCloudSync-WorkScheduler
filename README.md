@@ -19,8 +19,8 @@ This project is designed to automate the process of synchronizing work hours (ac
 To install all required Python packages, run:  
 > pip install -r requirements.txt
 - **Google Cloud Platform (GCP)**: Utilizes various GCP services, including App Engine, Cloud Functions, Cloud Scheduler, Google Cloud Storage, and Pub/Sub
-- **Programming Language**: Python for backend development.
-- **Google APIs**: Integration with Google Sheets and Calendar for data handling.
+- **Programming Language**: Python 3.10+ for backend development.
+- **Google APIs**: Integration with Google Sheets (v4) and Calendar (v3) for data handling.
 - **Pandas (Python Package)**: Interaction with Spreadsheet Cells and Reading their Values.
 - **Regular Expression (Python Library)**: Filtered Agent Names to Properly Set Shift Times.
 - **Datetime (Python Library)**: Streamlined RFC3339 Formatting Process for Calendar API Use.
