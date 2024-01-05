@@ -15,6 +15,7 @@ devin_email = confidential.readline().strip()
 shift_description = confidential.readline().strip()
 tm_description = confidential.readline().strip()
 wesley_email = confidential.readline().strip()
+elijah_email = confidential.readline().strip()
 confidential.close()
 
 agents = { 
@@ -24,7 +25,7 @@ agents = {
     "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
     "Breck" : ["America/Los_Angeles", breck_email], 
     "Garrick" : ["America/Los_Angeles", garrick_email], 
-    "Elijah" : ["America/Los_Angeles",  "email"],
+    "Elijah" : ["America/Los_Angeles", elijah_email],
     "Devin" : ["America/New_York",  devin_email],  
     "Wesley" : ["America/Los_Angeles", wesley_email], 
     "Jay" : ["America/Los_Angeles", "email"] ,
