@@ -224,7 +224,11 @@ for week_index in range(0, len(structured_df), 19):
     if not_empty:
         weeks.append(thisWeek_df)
 
-currentWeek_df = weeks[-1]
+try:
+    currentWeek_df = weeks[-1]
+except Exception as e:
+    print(f"ERROR: {e}\nCheck if sheet is empty!")
+    exit()
 
 for agent_name, agent_info in agents.items(): # algorithm that groups shifts within each date
     time_zone = agent_info[0]
