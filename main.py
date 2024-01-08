@@ -2,6 +2,7 @@ import gspread
 import pandas as pd 
 import re
 import datetime
+import sys
 from datetime import timedelta
 from google.oauth2.credentials import Credentials
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -245,7 +246,7 @@ for agent_name, agent_info in agents.items(): # algorithm that clusters shifts f
             current_date_unformatted += "/" + str(year_now - 1)
         current_date = str(datetime.datetime.strptime(current_date_unformatted, "%m/%d/%Y").date())
         agent_schedule[time_zone][agent_name] = {**agent_schedule[time_zone][agent_name], current_date : list()}
-        prev_slot_index = 100000000000000000
+        prev_slot_index = sys.maxsize
         shift_count = 0
         for slot_index in range(len(time_slots)):
             current_slot = time_slots[slot_index]
