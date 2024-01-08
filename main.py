@@ -231,7 +231,7 @@ except Exception as e:
     print(f"ERROR: {e}\nCheck if sheet is empty!")
     exit()
 
-for agent_name, agent_info in agents.items(): # algorithm that groups shifts within each date
+for agent_name, agent_info in agents.items(): # algorithm that clusters shifts for each day an agent is scheduled
     time_zone = agent_info[0]
     for i in range(1, 8): 
         time_slots = list(currentWeek_df.iloc[1:, i]) 
