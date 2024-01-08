@@ -370,8 +370,8 @@ for time_zone in agent_schedule:
                                         'reminders': {
                                             'useDefault': False,
                                             'overrides': [
-                                            {'method': 'email', 'minutes': 15},
-                                            {'method': 'popup', 'minutes': 5},
+                                            {'method': 'popup', 'minutes': 30},
+                                            {'method': 'email', 'minutes': 5},
                                             ],
                                         },
                                     }
