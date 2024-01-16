@@ -28,7 +28,7 @@ To install all required Python packages, navigate to the appropriate directory a
 ## Outcome
 The completion of this project will result in an efficient, cloud-based system that effectively integrates Google Sheets with Google Calendar. It showcases the practical application of cloud computing services in automating and simplifying routine productivity tasks.
 
-## Example
+## Demo:
 
 **Sample Google Sheets Schedule (Week 01/01/2024 - 01/07/2024):**
 
