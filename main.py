@@ -23,7 +23,7 @@ agents = {
     # example:
     # "agent name" : ["time/zone", "email@address.com"], NOTE (if "email@address.com" is set to "email", it will skip the agent.)
     "Zo" : ["America/New_York", "zohaibk1204@gmail.com"], 
-    "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
+    "Kofi" : ["America/Los_Angeles", "kodarfour@gmail.com"],
     "Breck" : ["America/Los_Angeles", breck_email], 
     "Garrick" : ["America/Los_Angeles", garrick_email], 
     "Elijah" : ["America/Los_Angeles", elijah_email],
