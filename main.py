@@ -17,6 +17,7 @@ shift_description = confidential.readline().strip()
 tm_description = confidential.readline().strip()
 wesley_email = confidential.readline().strip()
 elijah_email = confidential.readline().strip()
+shivali_email = confidential.readline().strip()
 confidential.close()
 
 agents = { 
@@ -30,6 +31,7 @@ agents = {
     "Devin" : ["America/New_York",  devin_email],  
     "Wesley" : ["America/Los_Angeles", wesley_email], 
     "Jay" : ["America/Los_Angeles", "email"] ,
+    "Shivali" : ["America/Chicago", shivali_email],
 }
 
 tm_whitelist = ["Zo", "Kofi"] # agents who want team meetings pushed to personal emails
@@ -202,7 +204,7 @@ worksheet_titles = [sheet.title for sheet in spreadsheet_info]
 regex_years = (year_now, year_now+1)
 regex_pattern = "^\w{3,8}\s%d|%d$" 
 # selects latest title under the parameters of:
-# 1. character size 3-8 (smallest month name is 3 largest is 8) takin in account for abreviations
+# 1. character size 3-8 (smallest month name is 3 largest is 8) taking in account for abreviations
 # 2. one single white space
 # 3. either the current year or one year after
 # NOTE: MAKE SURE THAT LEAD IS AWARE OF NAMING CONVENTION/ENSURING TARGET SCHEDULING WORKSHEET IS BEFORE ALL OTHER SCHEDULE RELATED WORKSHEETS
