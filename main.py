@@ -18,6 +18,7 @@ tm_description = confidential.readline().strip()
 wesley_email = confidential.readline().strip()
 elijah_email = confidential.readline().strip()
 shivali_email = confidential.readline().strip()
+audrey_email = confidential.readline().strip()
 confidential.close()
 
 agents = { 
@@ -32,6 +33,7 @@ agents = {
     "Wesley" : ["America/Los_Angeles", wesley_email], 
     "Jay" : ["America/Los_Angeles", "email"] ,
     "Shivali" : ["America/Chicago", shivali_email],
+    "Audrey" : ["America/New_York", audrey_email],
 }
 
 tm_whitelist = ["Zo", "Kofi"] # agents who want team meetings pushed to personal emails
