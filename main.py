@@ -25,7 +25,7 @@ agents = {
     # example:
     # "agent name" : ["time/zone", "email@address.com"], NOTE (if "email@address.com" is set to "email", it will skip the agent.)
     "Zo" : ["America/New_York", "zohaibk1204@gmail.com"], 
-    "Kofi" : ["America/Los_Angeles", "kodarfour@gmail.com"],
+    "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
     "Breck" : ["America/Los_Angeles", breck_email], 
     "Garrick" : ["America/Los_Angeles", garrick_email], 
     "Elijah" : ["America/Los_Angeles", elijah_email],
@@ -41,7 +41,7 @@ tm_whitelist = ["Zo", "Kofi"] # agents who want team meetings pushed to personal
 agent_schedule = {
     "America/New_York": dict(),         # Eastern Time
     "America/Los_Angeles": dict(),      # Pacific Time
-    "America/Chicago": dict(),          # Central Time
+    "America/Chicago": dict(),          # Central Time;
     "America/Denver": dict(),           # Mountain Time
     "America/Anchorage": dict(),        # Alaska
     "Pacific/Honolulu": dict(),         # Hawaii
