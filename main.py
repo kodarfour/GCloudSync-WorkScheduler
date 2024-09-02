@@ -233,7 +233,7 @@ for week_index in range(0, len(structured_df), 19):
 try:
     currentWeek_df = weeks[-1]
 except Exception as e:
-    print(f"ERROR: {e}\nCheck if sheet is empty!")
+    print(f"ERROR: {e}\nCheck if sheet is empty OR missing Team meeting slot!")
     exit()
 
 for agent_name, agent_info in agents.items(): # algorithm that clusters shifts for each day an agent is scheduled
@@ -255,7 +255,7 @@ for agent_name, agent_info in agents.items(): # algorithm that clusters shifts f
         for slot_index in range(len(time_slots)):
             current_slot = time_slots[slot_index]
             if agent_name in current_slot:
-                search_pattern = rf"\b{agent_name} : \d{{2}}"
+                search_pattern = rf"\b{agent_name} :\d{{2}}"
                 match = re.search(search_pattern, current_slot) # checking for custom start times
                 if match: # if custom minutes found for shift period
                     custom_minutes = match.group()
