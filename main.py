@@ -36,8 +36,6 @@ agents = {
     "Audrey" : ["America/New_York", audrey_email],
 }
 
-tm_whitelist = ["Zo", "Kofi"] # agents who want team meetings pushed to personal emails
-
 agent_schedule = {
     "America/New_York": dict(),         # Eastern Time
     "America/Los_Angeles": dict(),      # Pacific Time
@@ -286,25 +284,7 @@ for agent_name, agent_info in agents.items(): # algorithm that clusters shifts f
                         agent_schedule[time_zone][agent_name][current_date].append(list())
                         agent_schedule[time_zone][agent_name][current_date][shift_count].append(time_indexes[time_zone][slot_index])
                         prev_slot_index = slot_index
-            elif "Team meeting" in current_slot:
-                match = re.search(":..", current_slot)
-                if match: # if custom minutes found for team meeting period
-                    custom_minutes = match.group()
-                    if slot_index - prev_slot_index > 0: # if there is a shift  already in shift set, must create new shift  for TM
-                        shift_count += 1
-                    agent_schedule[time_zone][agent_name][current_date].append(list())
-                    first_hour = time_indexes[time_zone][slot_index][:2] 
-                    second_hour = time_indexes[time_zone][slot_index][6:8]
-                    agent_schedule[time_zone][agent_name][current_date][shift_count].append(first_hour + custom_minutes + "-" + second_hour + custom_minutes + " (TM)")
-                    if slot_index - prev_slot_index < 0: # if team meeting period is first in shift set
-                        shift_count += 1                        
-                else: # if custom minutes isn't found for team meeting period
-                    if slot_index - prev_slot_index > 0:
-                        shift_count += 1
-                    agent_schedule[time_zone][agent_name][current_date].append(list())
-                    agent_schedule[time_zone][agent_name][current_date][shift_count].append(time_indexes[time_zone][slot_index] + " (TM)")
-                    if slot_index - prev_slot_index < 0: 
-                        shift_count += 1
+
 
 for time_zone in agent_schedule:
     if len(list(agent_schedule[time_zone].keys())) == 0: # if there are no agents in current time_zone skip
@@ -323,7 +303,7 @@ for time_zone in agent_schedule:
                             if len(current_shift_set) == 1: # single hour shift
                                 start_time = current_date + "T" + current_shift_set[0][:5] + ":00" 
                                 end_time = current_date + "T" + current_shift_set[0][6:11] + ":00"
-                                if "(TM)" in current_shift_set[0] and agent_name in tm_whitelist:
+                                if "(TM)" in current_shift_set[0]:
                                     team_meeting = { # reset values
                                         'summary': '',
                                         'location': 'Zoom',
