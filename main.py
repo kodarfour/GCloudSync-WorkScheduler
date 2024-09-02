@@ -26,14 +26,14 @@ agents = {
     # "agent name" : ["time/zone", "email@address.com"], NOTE (if "email@address.com" is set to "email", it will skip the agent.)
     "Zo" : ["America/New_York", "zohaibk1204@gmail.com"], 
     "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
-    # "Breck" : ["America/Los_Angeles", breck_email], 
-    # "Garrick" : ["America/Los_Angeles", garrick_email], 
-    # "Elijah" : ["America/Los_Angeles", elijah_email],
-    # "Devin" : ["America/New_York",  devin_email],  
-    # "Wesley" : ["America/Los_Angeles", wesley_email], 
-    # "Jay" : ["America/Los_Angeles", "email"] ,
-    # "Shivali" : ["America/Chicago", shivali_email],
-    # "Audrey" : ["America/New_York", audrey_email],
+    "Breck" : ["America/Los_Angeles", breck_email], 
+    "Garrick" : ["America/Los_Angeles", garrick_email], 
+    "Elijah" : ["America/Los_Angeles", elijah_email],
+    "Devin" : ["America/New_York",  devin_email],  
+    "Wesley" : ["America/Los_Angeles", wesley_email], 
+    "Jay" : ["America/Los_Angeles", "email"] ,
+    "Shivali" : ["America/Chicago", shivali_email],
+    "Audrey" : ["America/New_York", audrey_email],
 }
 
 tm_whitelist = ["Zo", "Kofi"] # agents who want team meetings pushed to personal emails
