@@ -26,14 +26,14 @@ agents = {
     # "agent name" : ["time/zone", "email@address.com"], NOTE (if "email@address.com" is set to "email", it will skip the agent.)
     "Zo" : ["America/New_York", "zohaibk1204@gmail.com"], 
     "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
-    "Breck" : ["America/Los_Angeles", breck_email], 
-    "Garrick" : ["America/Los_Angeles", garrick_email], 
-    "Elijah" : ["America/Los_Angeles", elijah_email],
-    "Devin" : ["America/New_York",  devin_email],  
-    "Wesley" : ["America/Los_Angeles", wesley_email], 
-    "Jay" : ["America/Los_Angeles", "email"] ,
-    "Shivali" : ["America/Chicago", shivali_email],
-    "Audrey" : ["America/New_York", audrey_email],
+    # "Breck" : ["America/Los_Angeles", breck_email], 
+    # "Garrick" : ["America/Los_Angeles", garrick_email], 
+    # "Elijah" : ["America/Los_Angeles", elijah_email],
+    # "Devin" : ["America/New_York",  devin_email],  
+    # "Wesley" : ["America/Los_Angeles", wesley_email], 
+    # "Jay" : ["America/Los_Angeles", "email"] ,
+    # "Shivali" : ["America/Chicago", shivali_email],
+    # "Audrey" : ["America/New_York", audrey_email],
 }
 
 tm_whitelist = ["Zo", "Kofi"] # agents who want team meetings pushed to personal emails
@@ -255,7 +255,8 @@ for agent_name, agent_info in agents.items(): # algorithm that clusters shifts f
         for slot_index in range(len(time_slots)):
             current_slot = time_slots[slot_index]
             if agent_name in current_slot:
-                match = re.search(":..", current_slot) # checking for custom start times
+                search_pattern = rf"\b{agent_name} : \d{{2}}"
+                match = re.search(search_pattern, current_slot) # checking for custom start times
                 if match: # if custom minutes found for shift period
                     custom_minutes = match.group()
                     if slot_index - prev_slot_index < 0: # if period is first in shift set
