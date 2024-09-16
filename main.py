@@ -33,7 +33,7 @@ agents = {
     "Wesley" : ["America/Los_Angeles", wesley_email], 
     "Jay" : ["America/Los_Angeles", "email"] ,
     "Shivali" : ["America/Chicago", shivali_email],
-    "Audrey" : ["America/New_York", audrey_email],
+     "Audrey" : ["America/New_York", audrey_email],
 }
 
 agent_schedule = {
@@ -261,18 +261,18 @@ for agent_name, agent_info in agents.items(): # algorithm that clusters shifts f
                         agent_schedule[time_zone][agent_name][current_date].append(list())
                         first_hour = time_indexes[time_zone][slot_index][:2] 
                         remaining_time = time_indexes[time_zone][slot_index][5:]
-                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(first_hour + custom_minutes  + remaining_time) 
+                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(first_hour + ":" + custom_minutes[-2:]  + remaining_time) 
                         prev_slot_index = slot_index
                     elif slot_index - prev_slot_index == 1: # if shift period isn't first AND concurrent in shift set
                         time_before_custom_minutes = time_indexes[time_zone][slot_index][:8]
-                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(time_before_custom_minutes + custom_minutes)
+                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(time_before_custom_minutes + ":" + custom_minutes[-2:])
                         prev_slot_index = slot_index
                     else: # if not in current shift set
                         shift_count += 1
                         agent_schedule[time_zone][agent_name][current_date].append(list())
                         first_hour = time_indexes[time_zone][slot_index][:3] 
                         remaining_time = time_indexes[time_zone][slot_index][5:]
-                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(first_hour + custom_minutes  + remaining_time) 
+                        agent_schedule[time_zone][agent_name][current_date][shift_count].append(first_hour + ":" + custom_minutes[-2:]  + remaining_time) 
                         prev_slot_index = slot_index
                 else: # if custom minutes isn't found for shift period
                     if slot_index - prev_slot_index == 1: 
