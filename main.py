@@ -19,6 +19,7 @@ wesley_email = confidential.readline().strip()
 elijah_email = confidential.readline().strip()
 shivali_email = confidential.readline().strip()
 audrey_email = confidential.readline().strip()
+brianna_email = confidential.readline().strip()
 confidential.close()
 
 agents = { 
@@ -34,6 +35,7 @@ agents = {
     "Jay" : ["America/Los_Angeles", "email"] ,
     "Shivali" : ["America/Chicago", shivali_email],
      "Audrey" : ["America/New_York", audrey_email],
+     "Brianna" : ["America/New_York", brianna_email],
 }
 
 agent_schedule = {
