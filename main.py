@@ -10,32 +10,22 @@ from googleapiclient.discovery import build
 
 confidential =  open("confidential.txt", "r")
 spreadsheetID = confidential.readline().strip()
-breck_email = confidential.readline().strip()
 garrick_email = confidential.readline().strip()
-devin_email = confidential.readline().strip()
 shift_description = confidential.readline().strip()
 tm_description = confidential.readline().strip()
-wesley_email = confidential.readline().strip()
 elijah_email = confidential.readline().strip()
 shivali_email = confidential.readline().strip()
-audrey_email = confidential.readline().strip()
-brianna_email = confidential.readline().strip()
+lauren_email = confidential.readline().strip()
 confidential.close()
 
 agents = { 
     # example:
     # "agent name" : ["time/zone", "email@address.com"], NOTE (if "email@address.com" is set to "email", it will skip the agent.)
     "Zo" : ["America/New_York", "zohaibk1204@gmail.com"], 
-    "Kofi" : ["America/New_York", "kodarfour@gmail.com"],
-    "Breck" : ["America/Los_Angeles", breck_email], 
     "Garrick" : ["America/Los_Angeles", garrick_email], 
     "Elijah" : ["America/Los_Angeles", elijah_email],
-    "Devin" : ["America/New_York",  devin_email],  
-    "Wesley" : ["America/Los_Angeles", wesley_email], 
-    "Jay" : ["America/Los_Angeles", "email"] ,
     "Shivali" : ["America/Chicago", shivali_email],
-     "Audrey" : ["America/New_York", audrey_email],
-     "Brianna" : ["America/New_York", brianna_email],
+    "Lauren" : ["America/Los_Angeles", lauren_email],
 }
 
 agent_schedule = {
